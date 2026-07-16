@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Комплекс 3 в 1">
+  <rect width="400" height="400" fill="#F7F7F4"/>
+  <rect x="100" y="80" width="200" height="14" rx="7" fill="#111313"/>
+  <rect x="110" y="94" width="10" height="200" fill="#191C1D"/>
+  <rect x="280" y="94" width="10" height="200" fill="#191C1D"/>
+  <rect x="130" y="220" width="140" height="10" rx="5" fill="#6D706D"/>
+  <rect x="160" y="250" width="80" height="8" rx="4" fill="#D9FF00"/>
+</svg>

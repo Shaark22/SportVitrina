@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #d9ff00;
+  --color-primary-hover: #c5eb00;
+  --color-background: #f7f7f4;
+  --color-surface: #ffffff;
+  --color-dark: #111313;
+  --color-dark-secondary: #191c1d;
+  --color-text: #111313;
+  --color-text-secondary: #6d706d;
+  --color-border: #e5e5e0;
+  --color-success: #3c9b5f;
+  --font-sans: "Manrope", "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    @apply bg-background text-text font-sans antialiased;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100dvh;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-x: none;
+  }
+
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100dvh;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

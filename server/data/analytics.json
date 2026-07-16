@@ -1,0 +1,224 @@
+{
+  "version": 2,
+  "updatedAt": "2026-07-16T13:09:29.160Z",
+  "totals": {
+    "contacts": {
+      "instagram": 3,
+      "youtube": 1,
+      "whatsapp": 1
+    },
+    "products": {
+      "sportking-ljuks-belyi": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "sportking-ljuks-belyi",
+        "name": "Шведская стенка SportKing Люкс белый"
+      },
+      "sportking-3v1-multihvat-chernyi": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "sportking-3v1-multihvat-chernyi",
+        "name": "Турник 3 в 1 SportKing Мультихват чёрный"
+      },
+      "sportking-lait": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "sportking-lait",
+        "name": "Шведская стенка SportKing Лайт"
+      },
+      "sportking-3v1-multihvat-belyi": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "sportking-3v1-multihvat-belyi",
+        "name": "Турник 3 в 1 SportKing Мультихват белый"
+      },
+      "sportking-boxing-bag": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 1,
+        "slug": "sportking-boxing-bag",
+        "name": "Боксёрский мешок SportKing"
+      },
+      "shvedskaya-stenka-sportking-lyuks-belyy-seryy": {
+        "views": 6,
+        "clicks": 7,
+        "kaspiClicks": 3,
+        "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy",
+        "name": "Шведская стенка SportKing Люкс белый (серый)"
+      },
+      "turnik-sportking-3-v-1-usilennyy-belyy": {
+        "views": 4,
+        "clicks": 6,
+        "kaspiClicks": 1,
+        "slug": "turnik-sportking-3-v-1-usilennyy-belyy",
+        "name": "Турник SportKing 3 в 1 усиленный белый"
+      },
+      "shvedskaya-stenka-sportking-m-11-belyy": {
+        "views": 1,
+        "clicks": 2,
+        "kaspiClicks": 1,
+        "slug": "shvedskaya-stenka-sportking-m-11-belyy",
+        "name": "Шведская стенка SportKing M-11 белый"
+      },
+      "sportking-skamya-dlya-zhima-s-podstavkoy-chernyy": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "sportking-skamya-dlya-zhima-s-podstavkoy-chernyy",
+        "name": "SportKing скамья для жима с подставкой (черный)"
+      }
+    },
+    "pageViews": 1016,
+    "uniqueVisitors": 33,
+    "_visitorIds": [
+      "test-visitor-1",
+      "test-visitor-2",
+      "test-visitor-3",
+      "test-visitor-4",
+      "test-visitor-5",
+      "test-visitor-6",
+      "test-visitor-7",
+      "test-visitor-8",
+      "test-visitor-9",
+      "test-visitor-10",
+      "test-visitor-11",
+      "test-visitor-12",
+      "test-visitor-13",
+      "test-visitor-14",
+      "test-visitor-15",
+      "test-visitor-16",
+      "test-visitor-17",
+      "test-visitor-18",
+      "test-visitor-19",
+      "test-visitor-20",
+      "test-visitor-21",
+      "test-visitor-22",
+      "test-visitor-23",
+      "test-visitor-24",
+      "test-visitor-25",
+      "test-visitor-26",
+      "test-visitor-27",
+      "test-visitor-28",
+      "test-visitor-29",
+      "test-visitor-30",
+      "c2ea7548-92ce-4d39-868c-ccd05e81b2c7",
+      "5b3082c5-88f2-4127-9d48-a82e0f5d614d",
+      "0752b5c2-d5be-40f9-b423-da0e35e55183"
+    ]
+  },
+  "daily": {
+    "2026-07-16": {
+      "contacts": {
+        "instagram": 3,
+        "youtube": 1,
+        "whatsapp": 1
+      },
+      "products": {
+        "sportking-ljuks-belyi": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "sportking-ljuks-belyi",
+          "name": "Шведская стенка SportKing Люкс белый"
+        },
+        "sportking-3v1-multihvat-chernyi": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "sportking-3v1-multihvat-chernyi",
+          "name": "Турник 3 в 1 SportKing Мультихват чёрный"
+        },
+        "sportking-lait": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "sportking-lait",
+          "name": "Шведская стенка SportKing Лайт"
+        },
+        "sportking-3v1-multihvat-belyi": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "sportking-3v1-multihvat-belyi",
+          "name": "Турник 3 в 1 SportKing Мультихват белый"
+        },
+        "sportking-boxing-bag": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 1,
+          "slug": "sportking-boxing-bag",
+          "name": "Боксёрский мешок SportKing"
+        },
+        "shvedskaya-stenka-sportking-lyuks-belyy-seryy": {
+          "views": 6,
+          "clicks": 7,
+          "kaspiClicks": 3,
+          "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy",
+          "name": "Шведская стенка SportKing Люкс белый (серый)"
+        },
+        "turnik-sportking-3-v-1-usilennyy-belyy": {
+          "views": 4,
+          "clicks": 6,
+          "kaspiClicks": 1,
+          "slug": "turnik-sportking-3-v-1-usilennyy-belyy",
+          "name": "Турник SportKing 3 в 1 усиленный белый"
+        },
+        "shvedskaya-stenka-sportking-m-11-belyy": {
+          "views": 1,
+          "clicks": 2,
+          "kaspiClicks": 1,
+          "slug": "shvedskaya-stenka-sportking-m-11-belyy",
+          "name": "Шведская стенка SportKing M-11 белый"
+        },
+        "sportking-skamya-dlya-zhima-s-podstavkoy-chernyy": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "sportking-skamya-dlya-zhima-s-podstavkoy-chernyy",
+          "name": "SportKing скамья для жима с подставкой (черный)"
+        }
+      },
+      "pageViews": 1016,
+      "uniqueVisitors": 33,
+      "_visitorIds": [
+        "test-visitor-1",
+        "test-visitor-2",
+        "test-visitor-3",
+        "test-visitor-4",
+        "test-visitor-5",
+        "test-visitor-6",
+        "test-visitor-7",
+        "test-visitor-8",
+        "test-visitor-9",
+        "test-visitor-10",
+        "test-visitor-11",
+        "test-visitor-12",
+        "test-visitor-13",
+        "test-visitor-14",
+        "test-visitor-15",
+        "test-visitor-16",
+        "test-visitor-17",
+        "test-visitor-18",
+        "test-visitor-19",
+        "test-visitor-20",
+        "test-visitor-21",
+        "test-visitor-22",
+        "test-visitor-23",
+        "test-visitor-24",
+        "test-visitor-25",
+        "test-visitor-26",
+        "test-visitor-27",
+        "test-visitor-28",
+        "test-visitor-29",
+        "test-visitor-30",
+        "c2ea7548-92ce-4d39-868c-ccd05e81b2c7",
+        "5b3082c5-88f2-4127-9d48-a82e0f5d614d",
+        "0752b5c2-d5be-40f9-b423-da0e35e55183"
+      ]
+    }
+  }
+}

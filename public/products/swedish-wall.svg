@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Шведская стенка">
+  <rect width="400" height="400" fill="#F7F7F4"/>
+  <rect x="140" y="60" width="120" height="300" rx="6" fill="#191C1D"/>
+  <rect x="155" y="80" width="14" height="260" rx="3" fill="#D9FF00"/>
+  <rect x="185" y="80" width="14" height="260" rx="3" fill="#D9FF00" opacity="0.7"/>
+  <rect x="215" y="80" width="14" height="260" rx="3" fill="#D9FF00" opacity="0.4"/>
+  <rect x="100" y="120" width="200" height="12" rx="6" fill="#111313"/>
+</svg>

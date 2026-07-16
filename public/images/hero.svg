@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Домашний спортзал">
+  <rect width="800" height="600" fill="#F7F7F4"/>
+  <rect x="60" y="80" width="680" height="440" rx="24" fill="#FFFFFF" stroke="#E5E5E0" stroke-width="2"/>
+  <rect x="120" y="140" width="180" height="320" rx="8" fill="#191C1D"/>
+  <rect x="140" y="160" width="20" height="280" rx="4" fill="#D9FF00"/>
+  <rect x="180" y="160" width="20" height="280" rx="4" fill="#D9FF00" opacity="0.6"/>
+  <rect x="220" y="160" width="20" height="280" rx="4" fill="#D9FF00" opacity="0.3"/>
+  <rect x="380" y="200" width="280" height="16" rx="8" fill="#111313"/>
+  <rect x="380" y="280" width="220" height="12" rx="6" fill="#6D706D"/>
+  <rect x="380" y="320" width="160" height="12" rx="6" fill="#6D706D" opacity="0.6"/>
+  <circle cx="620" cy="420" r="48" fill="#D9FF00" opacity="0.2"/>
+  <text x="400" y="520" text-anchor="middle" fill="#111313" font-family="Arial, sans-serif" font-size="20" font-weight="700">SPORT KING</text>
+</svg>

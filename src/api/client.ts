@@ -1,0 +1,138 @@
+const AUTH_KEY = 'sportking-admin-token'
+
+function getToken() {
+  return sessionStorage.getItem(AUTH_KEY)
+}
+
+export function setAuthToken(token: string | null) {
+  if (token) sessionStorage.setItem(AUTH_KEY, token)
+  else sessionStorage.removeItem(AUTH_KEY)
+}
+
+async function request<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const headers = new Headers(options.headers)
+  const token = getToken()
+  if (token) headers.set('Authorization', `Bearer ${token}`)
+
+  if (!(options.body instanceof FormData)) {
+    headers.set('Content-Type', 'application/json')
+  }
+
+  const res = await fetch(path, { ...options, headers })
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    throw new Error(data.error || `Ошибка сервера (${res.status})`)
+  }
+
+  return res.json() as Promise<T>
+}
+
+export interface StoreData {
+  version: number
+  products: import('../types/product').Product[]
+  categories: import('../types/category').Category[]
+}
+
+export interface AnalyticsSummary {
+  updatedAt: string
+  totals: {
+    uniqueVisitors: number
+    pageViews: number
+    contactClicks: number
+    kaspiClicks: number
+  }
+  contacts: { key: string; label: string; count: number }[]
+  topClicks: {
+    productId: string
+    name: string
+    slug: string
+    views: number
+    clicks: number
+    kaspiClicks: number
+  }[]
+  topKaspi: AnalyticsSummary['topClicks']
+  last7Days: { date: string; uniqueVisitors: number; pageViews: number }[]
+}
+
+export const api = {
+  getStore: () => request<StoreData>('/api/store'),
+
+  verifyAuth: () => request<{ ok: boolean }>('/api/auth/me'),
+
+  getAnalytics: () => request<AnalyticsSummary>('/api/analytics'),
+
+  login: (password: string) =>
+    request<{ token: string }>('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ password }),
+    }),
+
+  logout: () =>
+    request<{ ok: boolean }>('/api/auth/logout', { method: 'POST' }),
+
+  uploadImage: (file: File) => {
+    const form = new FormData()
+    form.append('file', file)
+    return request<{ url: string }>('/api/upload', {
+      method: 'POST',
+      body: form,
+    })
+  },
+
+  createProduct: (product: Omit<import('../types/product').Product, 'id'> & { id?: string }) =>
+    request<import('../types/product').Product>('/api/products', {
+      method: 'POST',
+      body: JSON.stringify(product),
+    }),
+
+  updateProduct: (id: string, product: Partial<import('../types/product').Product>) =>
+    request<import('../types/product').Product>(`/api/products/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(product),
+    }),
+
+  deleteProduct: (id: string) =>
+    request<{ ok: boolean }>(`/api/products/${id}`, { method: 'DELETE' }),
+
+  createCategory: (category: Omit<import('../types/category').Category, 'id'> & { id?: string }) =>
+    request<import('../types/category').Category>('/api/categories', {
+      method: 'POST',
+      body: JSON.stringify(category),
+    }),
+
+  updateCategory: (id: string, category: Partial<import('../types/category').Category>) =>
+    request<import('../types/category').Category>(`/api/categories/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(category),
+    }),
+
+  deleteCategory: (id: string) =>
+    request<{ ok: boolean }>(`/api/categories/${id}`, { method: 'DELETE' }),
+
+  resetStore: () =>
+    request<StoreData>('/api/store/reset', { method: 'POST' }),
+}
+
+export async function uploadImageFile(file: File): Promise<string> {
+  const compressed = await compressIfNeeded(file)
+  const { url } = await api.uploadImage(compressed)
+  return url
+}
+
+async function compressIfNeeded(file: File): Promise<File> {
+  if (!file.type.startsWith('image/') || file.size < 400_000) return file
+  try {
+    const { compressImageToDataUrl } = await import('../utils/compressImage')
+    const dataUrl = await compressImageToDataUrl(file)
+    const blob = await (await fetch(dataUrl)).blob()
+    return new File([blob], file.name.replace(/\.\w+$/, '.jpg'), {
+      type: 'image/jpeg',
+    })
+  } catch {
+    return file
+  }
+}

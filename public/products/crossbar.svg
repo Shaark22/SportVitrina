@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Перекладина">
+  <rect width="400" height="400" fill="#F7F7F4"/>
+  <rect x="60" y="180" width="280" height="14" rx="7" fill="#111313"/>
+  <rect x="80" y="194" width="8" height="100" fill="#191C1D"/>
+  <rect x="312" y="194" width="8" height="100" fill="#191C1D"/>
+</svg>
