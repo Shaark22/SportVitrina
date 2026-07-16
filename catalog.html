@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог — IRON HOME</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <div class="logo__icon">IH</div>
+        <div class="logo__text">IRON <span>HOME</span></div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Главная</a>
+        <a href="catalog.html" class="active">Каталог</a>
+        <a href="index.html#categories">Категории</a>
+        <a href="index.html#about">О нас</a>
+      </nav>
+      <div class="header__actions">
+        <span class="header__phone">+7 (777) 123-45-67</span>
+        <a href="https://kaspi.kz/shop" target="_blank" class="btn btn--primary btn--sm">Kaspi</a>
+      </div>
+      <button class="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav">
+    <a href="index.html">Главная</a>
+    <a href="catalog.html">Каталог</a>
+    <a href="admin.html">Админ-панель</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title display">КАТАЛОГ</h1>
+      <p class="page-hero__desc">Весь спортивный инвентарь для домашних тренировок</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="filters" id="filters"></div>
+      <p id="catalog-count" style="text-align:center;color:var(--gray-600);margin-bottom:2rem;font-weight:600"></p>
+      <div class="products__grid" id="catalog-grid"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="border:none;padding:0">
+        <span>© <span id="footer-year">2026</span> <span data-company>IRON HOME</span></span>
+        <a href="index.html">← На главную</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/catalog.js"></script>
+</body>
+</html>

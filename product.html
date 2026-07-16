@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Товар — IRON HOME</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <div class="logo__icon">IH</div>
+        <div class="logo__text">IRON <span>HOME</span></div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Главная</a>
+        <a href="catalog.html" class="active">Каталог</a>
+      </nav>
+      <div class="header__actions">
+        <span class="header__phone">+7 (777) 123-45-67</span>
+      </div>
+      <button class="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav">
+    <a href="index.html">Главная</a>
+    <a href="catalog.html">Каталог</a>
+  </nav>
+
+  <section class="product-detail">
+    <div class="container">
+      <a href="catalog.html" style="color:var(--gray-600);font-weight:600;font-size:0.9rem;display:inline-block;margin-bottom:2rem">← Вернуться в каталог</a>
+
+      <div class="product-detail__grid">
+        <div class="product-detail__gallery" id="product-gallery"></div>
+        <div class="product-detail__info">
+          <div class="product-detail__category" id="product-category">Категория</div>
+          <h1 class="product-detail__title" id="product-title">Название товара</h1>
+          <div class="product-detail__price" id="product-price">0 ₸</div>
+          <p class="product-detail__desc" id="product-desc">Описание товара</p>
+
+          <div class="product-detail__specs">
+            <h3>Характеристики</h3>
+            <div id="product-specs"></div>
+          </div>
+
+          <div class="product-detail__actions">
+            <a href="#" id="btn-kaspi" target="_blank" rel="noopener" class="btn btn--kaspi btn--lg">
+              🛒 Купить на Kaspi
+            </a>
+            <a href="#" id="btn-whatsapp" target="_blank" rel="noopener" class="btn btn--whatsapp btn--lg">
+              💬 Написать продавцу
+            </a>
+          </div>
+
+          <div style="margin-top:2rem;padding:1.25rem;background:var(--gray-50);border-radius:var(--radius-sm);font-size:0.9rem;color:var(--gray-600)">
+            <strong style="color:var(--black)">💳 Оплата через Kaspi</strong> — рассрочка 0-0-12, быстрая доставка по Казахстану.<br>
+            <strong style="color:var(--black)">💬 WhatsApp</strong> — консультация, индивидуальный заказ, самовывоз.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="container">
+      <div class="section-header" style="margin-bottom:2rem">
+        <h2 class="section-title display" style="font-size:2.5rem">ПОХОЖИЕ ТОВАРЫ</h2>
+      </div>
+      <div class="products__grid" id="related-products"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom" style="border:none;padding:0">
+        <span>© <span id="footer-year">2026</span> <span data-company>IRON HOME</span></span>
+        <a href="catalog.html">← Каталог</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/product.js"></script>
+</body>
+</html>

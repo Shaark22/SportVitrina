@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — IRON HOME</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page">
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <div class="logo__icon">IH</div>
+        <div class="logo__text">IRON <span>HOME</span></div>
+      </a>
+      <div class="header__actions">
+        <a href="index.html" class="btn btn--outline btn--sm">← На сайт</a>
+        <button id="logout-btn" class="btn btn--primary btn--sm" style="display:none">Выйти</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOGIN -->
+  <div id="login-view">
+    <div class="login-box">
+      <h2 class="display">АДМИН-ПАНЕЛЬ</h2>
+      <p>Введите пароль для управления товарами</p>
+      <form id="login-form" class="admin-form" style="max-width:100%">
+        <div class="form-group">
+          <input type="password" id="admin-password" placeholder="Пароль" required>
+        </div>
+        <p id="login-error" style="font-size:0.85rem;min-height:1.2em"></p>
+        <button type="submit" class="btn btn--primary" style="width:100%">Войти</button>
+      </form>
+      <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--gray-400)">Демо-пароль: <code>admin123</code></p>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="admin-view" style="display:none">
+    <div class="admin-header">
+      <div class="container">
+        <h1>УПРАВЛЕНИЕ МАГАЗИНОМ</h1>
+        <p style="opacity:0.6;margin-top:0.5rem">Добавляйте товары, меняйте цены и настройки сайта</p>
+      </div>
+    </div>
+
+    <div class="container admin-layout">
+      <aside class="admin-sidebar">
+        <nav>
+          <button data-admin-nav="products" class="active">📦 Все товары</button>
+          <button data-admin-nav="add">➕ Добавить товар</button>
+          <button data-admin-nav="settings">⚙️ Настройки</button>
+        </nav>
+        <hr style="margin:1rem 0;border:none;border-top:1px solid var(--gray-100)">
+        <button id="btn-reset-products" class="btn btn--outline btn--sm" style="width:100%;font-size:0.8rem">
+          Сбросить к демо-данным
+        </button>
+      </aside>
+
+      <main class="admin-main">
+        <!-- Products list -->
+        <div id="view-products">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.04em">ТОВАРЫ</h2>
+            <button id="btn-add-product" class="btn btn--primary btn--sm">+ Добавить</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Фото</th>
+                  <th>Название</th>
+                  <th>Категория</th>
+                  <th>Цена</th>
+                  <th>Хит</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add/Edit product -->
+        <div id="view-add" style="display:none">
+          <h2 id="form-title" style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.04em;margin-bottom:1.5rem">ДОБАВИТЬ ТОВАР</h2>
+          <form id="product-form" class="admin-form">
+            <input type="hidden" id="product-id">
+            <div class="form-group">
+              <label>Название товара</label>
+              <input type="text" id="product-name" required placeholder="Турник настенный PRO">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Категория</label>
+                <select id="product-category" required>
+                  <option value="tourniki">Турники</option>
+                  <option value="brusya">Брусья</option>
+                  <option value="lavochki">Скамьи</option>
+                  <option value="stoyki">Стойки</option>
+                  <option value="aksessuary">Аксессуары</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Цена (₸)</label>
+                <input type="number" id="product-price" required placeholder="24990" min="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Описание</label>
+              <textarea id="product-description" required placeholder="Подробное описание товара..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>URL фото</label>
+              <input type="url" id="product-image" required placeholder="https://example.com/photo.jpg">
+            </div>
+            <div class="form-group">
+              <label>Ссылка на Kaspi</label>
+              <input type="url" id="product-kaspi" required placeholder="https://kaspi.kz/shop/p/...">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Характеристика 1</label>
+                <input type="text" id="product-spec1" placeholder="150 кг">
+              </div>
+              <div class="form-group">
+                <label>Характеристика 2</label>
+                <input type="text" id="product-spec2" placeholder="Сталь">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Характеристика 3</label>
+              <input type="text" id="product-spec3" placeholder="Настенное крепление">
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="product-featured">
+              <label for="product-featured">Хит продаж (показывать на главной)</label>
+            </div>
+            <button type="submit" class="btn btn--primary">💾 Сохранить товар</button>
+          </form>
+        </div>
+
+        <!-- Settings -->
+        <div id="view-settings" style="display:none">
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.04em;margin-bottom:1.5rem">НАСТРОЙКИ САЙТА</h2>
+          <form id="settings-form" class="admin-form">
+            <div class="form-group">
+              <label>Название компании</label>
+              <input type="text" id="settings-company" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Телефон</label>
+                <input type="text" id="settings-phone" required placeholder="+7 (777) 123-45-67">
+              </div>
+              <div class="form-group">
+                <label>WhatsApp (без +)</label>
+                <input type="text" id="settings-whatsapp" required placeholder="77771234567">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Адрес</label>
+              <input type="text" id="settings-address" placeholder="г. Алматы, Казахстан">
+            </div>
+            <div class="form-group">
+              <label>URL магазина Kaspi</label>
+              <input type="url" id="settings-kaspi" placeholder="https://kaspi.kz/shop/...">
+            </div>
+            <div class="form-group">
+              <label>Пароль админки</label>
+              <input type="text" id="settings-password" required>
+            </div>
+            <button type="submit" class="btn btn--primary">💾 Сохранить настройки</button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    document.getElementById('logout-btn').style.display =
+      sessionStorage.getItem('sport_vitrina_admin_session') === 'true' ? 'inline-flex' : 'none';
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      document.getElementById('logout-btn').style.display = 'none';
+    });
+    const obs = new MutationObserver(() => {
+      document.getElementById('logout-btn').style.display =
+        document.getElementById('admin-view')?.style.display !== 'none' ? 'inline-flex' : 'none';
+    });
+    obs.observe(document.getElementById('admin-view'), { attributes: true, attributeFilter: ['style'] });
+  </script>
+</body>
+</html>

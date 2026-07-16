@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRON HOME — Спортивный инвентарь для дома</title>
+  <meta name="description" content="Профессиональный спортивный инвентарь для дома: турники, брусья, скамьи, стойки. Покупка через Kaspi или напрямую у продавца.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <div class="logo__icon">IH</div>
+        <div class="logo__text">IRON <span>HOME</span></div>
+      </a>
+      <nav class="nav">
+        <a href="index.html" class="active">Главная</a>
+        <a href="catalog.html">Каталог</a>
+        <a href="#categories">Категории</a>
+        <a href="#about">О нас</a>
+      </nav>
+      <div class="header__actions">
+        <span class="header__phone">+7 (777) 123-45-67</span>
+        <a href="catalog.html" class="btn btn--primary btn--sm">Каталог</a>
+      </div>
+      <button class="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav">
+    <a href="index.html">Главная</a>
+    <a href="catalog.html">Каталог</a>
+    <a href="#categories">Категории</a>
+    <a href="#about">О нас</a>
+    <a href="admin.html">Админ-панель</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__grid"></div>
+    <div class="container hero__content">
+      <div>
+        <div class="hero__badge">Официальный магазин на Kaspi</div>
+        <h1 class="hero__title display">
+          СИЛА НАЧИНАЕТСЯ
+          <span class="accent">ДОМА</span>
+        </h1>
+        <p class="hero__desc">
+          Профессиональный спортивный инвентарь для домашних тренировок.
+          Турники, брусья, скамьи и стойки — качество, которому можно доверять.
+        </p>
+        <div class="hero__buttons">
+          <a href="catalog.html" class="btn btn--primary btn--lg">Смотреть каталог</a>
+          <a href="https://kaspi.kz/shop" target="_blank" rel="noopener" class="btn btn--white btn--lg">🛒 Магазин Kaspi</a>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__card">
+          <div class="hero__card-img">
+            <img id="hero-product-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:16px">
+          </div>
+          <div class="hero__card-title" id="hero-product-title">Турник PRO</div>
+          <div class="hero__card-price" id="hero-product-price">24 990 ₸</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero__stats">
+      <div>
+        <div class="hero__stat-num">500+</div>
+        <div class="hero__stat-label">Довольных клиентов</div>
+      </div>
+      <div>
+        <div class="hero__stat-num" id="stat-products">8+</div>
+        <div class="hero__stat-label">Товаров в каталоге</div>
+      </div>
+      <div>
+        <div class="hero__stat-num">5</div>
+        <div class="hero__stat-label">Лет на рынке</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Категории</div>
+        <h2 class="section-title display">ВЫБЕРИТЕ СВОЁ</h2>
+        <p class="section-desc">Полный ассортимент спортивного оборудования для домашнего зала</p>
+      </div>
+      <div class="categories__grid">
+        <div class="category-card" data-category="tourniki">
+          <div class="category-card__bg"></div>
+          <div class="category-card__content">
+            <div class="category-card__icon">💪</div>
+            <div class="category-card__name">Турники</div>
+            <div class="category-card__count" data-category-count="tourniki">0 товаров</div>
+          </div>
+        </div>
+        <div class="category-card" data-category="brusya">
+          <div class="category-card__bg"></div>
+          <div class="category-card__content">
+            <div class="category-card__icon">🤸</div>
+            <div class="category-card__name">Брусья</div>
+            <div class="category-card__count" data-category-count="brusya">0 товаров</div>
+          </div>
+        </div>
+        <div class="category-card" data-category="lavochki">
+          <div class="category-card__bg"></div>
+          <div class="category-card__content">
+            <div class="category-card__icon">🛋️</div>
+            <div class="category-card__name">Скамьи</div>
+            <div class="category-card__count" data-category-count="lavochki">0 товаров</div>
+          </div>
+        </div>
+        <div class="category-card" data-category="stoyki">
+          <div class="category-card__bg"></div>
+          <div class="category-card__content">
+            <div class="category-card__icon">🏗️</div>
+            <div class="category-card__name">Стойки</div>
+            <div class="category-card__count" data-category-count="stoyki">0 товаров</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section id="catalog">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Популярное</div>
+        <h2 class="section-title display">ХИТЫ ПРОДАЖ</h2>
+        <p class="section-desc">Самые востребованные товары нашего магазина</p>
+      </div>
+      <div class="products__grid" id="featured-products"></div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="catalog.html" class="btn btn--outline btn--lg">Весь каталог →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="about">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" style="color:var(--red-light)">Почему мы</div>
+        <h2 class="section-title display" style="color:white">НАМ ДОВЕРЯЮТ</h2>
+      </div>
+      <div class="features__grid">
+        <div class="feature-card">
+          <div class="feature-card__icon">🏆</div>
+          <h3 class="feature-card__title">Качество материалов</h3>
+          <p class="feature-card__desc">Используем только сертифицированную сталь и надёжную фурнитуру. Каждое изделие проходит контроль качества.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">🛒</div>
+          <h3 class="feature-card__title">Покупка на Kaspi</h3>
+          <p class="feature-card__desc">Оформляйте заказ через Kaspi магазин с рассрочкой 0-0-12. Быстрая доставка по всему Казахстану.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card__icon">💬</div>
+          <h3 class="feature-card__title">Прямая связь</h3>
+          <p class="feature-card__desc">Напишите нам в WhatsApp — поможем с выбором, ответим на вопросы и оформим индивидуальный заказ.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <div class="section-label" style="color:rgba(255,255,255,0.7)">Начните сегодня</div>
+      <h2 class="section-title display">СОЗДАЙТЕ СВОЙ ДОМАШНИЙ ЗАЛ</h2>
+      <p class="section-desc">Выберите оборудование и начните тренироваться уже завтра</p>
+      <div class="cta__buttons">
+        <a href="catalog.html" class="btn btn--white btn--lg">Выбрать товар</a>
+        <a href="https://wa.me/77771234567" target="_blank" rel="noopener" class="btn btn--outline btn--lg" style="border-color:white;color:white">💬 Написать нам</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="logo">
+            <div class="logo__icon">IH</div>
+            <div class="logo__text" style="color:white">IRON <span>HOME</span></div>
+          </a>
+          <p>Профессиональный спортивный инвентарь для дома. Турники, брусья, скамьи и многое другое.</p>
+          <div style="margin-top:1rem">
+            <span class="kaspi-badge">🛒 Официальный магазин Kaspi</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__title">Каталог</h4>
+          <ul class="footer__links">
+            <li><a href="catalog.html?category=tourniki">Турники</a></li>
+            <li><a href="catalog.html?category=brusya">Брусья</a></li>
+            <li><a href="catalog.html?category=lavochki">Скамьи</a></li>
+            <li><a href="catalog.html?category=stoyki">Стойки</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__title">Покупателям</h4>
+          <ul class="footer__links">
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="https://kaspi.kz/shop" target="_blank">Kaspi магазин</a></li>
+            <li><a href="#about">О компании</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__title">Контакты</h4>
+          <ul class="footer__links">
+            <li><a href="tel:+77771234567" data-phone>+7 (777) 123-45-67</a></li>
+            <li><a href="https://wa.me/77771234567" target="_blank">WhatsApp</a></li>
+            <li data-address>г. Алматы, Казахстан</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span id="footer-year">2026</span> <span data-company>IRON HOME</span>. Все права защищены.</span>
+        <a href="admin.html" style="opacity:0.3;font-size:0.8rem">Админ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
