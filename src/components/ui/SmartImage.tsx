@@ -8,6 +8,8 @@ interface SmartImageProps {
   className?: string
   loading?: 'lazy' | 'eager'
   aspect?: string
+  /** Show full image height (product gallery) instead of filling a fixed box. */
+  naturalHeight?: boolean
 }
 
 export function SmartImage({
@@ -16,6 +18,7 @@ export function SmartImage({
   className = '',
   loading = 'lazy',
   aspect = 'aspect-square',
+  naturalHeight = false,
 }: SmartImageProps) {
   const [error, setError] = useState(false)
   const [loaded, setLoaded] = useState(false)
@@ -39,16 +42,34 @@ export function SmartImage({
     )
   }
 
+  if (naturalHeight) {
+    return (
+      <div className={`relative max-w-full ${className}`}>
+        {!loaded && (
+          <div className="absolute inset-0 min-h-[200px] shimmer rounded-xl" aria-hidden />
+        )}
+        <img
+          src={imageSrc}
+          alt={alt}
+          loading={loading}
+          className={`mx-auto block h-auto w-full max-w-full object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+        />
+      </div>
+    )
+  }
+
   return (
     <div
-      className={`relative ${aspect || 'h-full w-full'} ${className.includes('max-') ? className : ''}`}
+      className={`relative max-w-full ${aspect || 'h-full w-full'} ${className.includes('max-') ? className : ''}`}
     >
       {!loaded && <div className="absolute inset-0 shimmer" aria-hidden />}
       <img
         src={imageSrc}
         alt={alt}
         loading={loading}
-        className={`h-full w-full object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+        className={`h-full max-h-full max-w-full w-full object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
       />

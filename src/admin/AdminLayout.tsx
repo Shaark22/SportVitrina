@@ -1,5 +1,5 @@
 import { useLocation, Navigate, Outlet, NavLink, Link } from 'react-router-dom'
-import { LayoutGrid, Package, Tags, LogOut, ExternalLink, BarChart3, MessageSquare } from 'lucide-react'
+import { LayoutGrid, Package, Tags, LogOut, ExternalLink, BarChart3, MessageSquare, ClipboardList, Settings, AlertTriangle } from 'lucide-react'
 import { useData } from '../context/DataContext'
 import { Logo } from '../components/ui/Logo'
 import { publicSiteUrl } from './publicSiteUrl'
@@ -8,8 +8,11 @@ const links = [
   { to: '/', label: 'Обзор', icon: LayoutGrid, end: true },
   { to: '/statistics', label: 'Статистика', icon: BarChart3 },
   { to: '/products', label: 'Товары', icon: Package },
+  { to: '/orders', label: 'Заявки', icon: ClipboardList },
   { to: '/reviews', label: 'Отзывы', icon: MessageSquare },
   { to: '/categories', label: 'Категории', icon: Tags },
+  { to: '/settings', label: 'Настройки', icon: Settings },
+  { to: '/errors', label: 'Ошибки', icon: AlertTriangle },
 ]
 
 export function AdminLayout() {

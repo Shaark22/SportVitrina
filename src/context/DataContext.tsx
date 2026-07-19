@@ -22,9 +22,13 @@ import type { Category } from '../types/category'
 
 import type { Review } from '../types/review'
 
+import type { SiteSettings } from '../types/siteSettings'
+
 import { defaultProducts } from '../data/products'
 
 import { defaultCategories } from '../data/categories'
+
+import { defaultSiteSettings, mergeSiteSettings } from '../types/siteSettings'
 
 import { api, setAuthToken, type StoreData } from '../api/client'
 
@@ -41,6 +45,8 @@ interface DataContextValue {
   categories: Category[]
 
   reviews: Review[]
+
+  siteSettings: SiteSettings
 
   loading: boolean
 
@@ -77,6 +83,10 @@ interface DataContextValue {
   deleteReview: (id: string) => Promise<void>
 
   resetToDefaults: () => Promise<void>
+
+  updateSiteSettings: (data: SiteSettings) => Promise<void>
+
+  resetSiteSettings: () => Promise<SiteSettings>
 
   isAdmin: boolean
 
@@ -124,6 +134,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const [store, setStore] = useState<StoreData | null>(null)
 
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(defaultSiteSettings)
+
   const [loading, setLoading] = useState(true)
 
   const [error, setError] = useState<string | null>(null)
@@ -135,6 +147,16 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const resolvedStore = store ?? fallbackStore
 
 
+
+  const refreshSettings = useCallback(async () => {
+    try {
+      const settings = await api.getSettings()
+      setSiteSettings(mergeSiteSettings(settings))
+      return true
+    } catch {
+      return false
+    }
+  }, [])
 
   const refresh = useCallback(async () => {
 
@@ -151,6 +173,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         const data = await api.getStore()
 
         setStore({ ...data, reviews: data.reviews ?? [] })
+
+        await refreshSettings()
 
         setError(null)
 
@@ -176,7 +200,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     setStore((prev) => prev ?? fallbackStore)
 
-  }, [])
+  }, [refreshSettings])
 
 
 
@@ -228,6 +252,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     const onFocus = () => {
 
+      void refreshSettings()
+
       if (error) void refresh()
 
     }
@@ -236,7 +262,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     return () => window.removeEventListener('focus', onFocus)
 
-  }, [error, refresh])
+  }, [error, refresh, refreshSettings])
 
 
 
@@ -632,6 +658,28 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
 
 
+  const updateSiteSettings = useCallback(async (data: SiteSettings) => {
+
+    const updated = await api.updateSettings(data)
+
+    setSiteSettings(mergeSiteSettings(updated))
+
+  }, [])
+
+
+
+  const resetSiteSettings = useCallback(async () => {
+
+    const updated = await api.resetSettings()
+
+    setSiteSettings(mergeSiteSettings(updated))
+
+    return mergeSiteSettings(updated)
+
+  }, [])
+
+
+
   const login = useCallback(async (password: string) => {
 
     const { token } = await api.login(password)
@@ -678,6 +726,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
       reviews: resolvedStore.reviews,
 
+      siteSettings,
+
       loading,
 
       error,
@@ -713,6 +763,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
       deleteReview,
 
       resetToDefaults,
+
+      updateSiteSettings,
+
+      resetSiteSettings,
 
       isAdmin,
 
@@ -726,6 +780,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
       resolvedStore,
 
+      siteSettings,
+
       loading,
 
       error,
@@ -761,6 +817,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
       deleteReview,
 
       resetToDefaults,
+
+      updateSiteSettings,
+
+      resetSiteSettings,
 
       isAdmin,
 

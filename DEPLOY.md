@@ -15,7 +15,7 @@ Free-план возможен для демо, но после 15 минут б
 | Переменная | Обязательно | Описание |
 |------------|-------------|----------|
 | `NODE_ENV` | да | `production` |
-| `ADMIN_PASSWORD` | **да** | Пароль админки (секрет) |
+| `ADMIN_PASSWORD` | **да** | Пароль админки (секрет). Default `sportking` **запрещён** в production |
 | `ADMIN_PATH` | нет | Путь без `/`, default `sk-manage-kz8m2p` |
 | `VITE_ADMIN_BASE` | да* | `/${ADMIN_PATH}` — нужен **на этапе build** |
 | `DATA_DIR` | нет | Каталог данных; на Render с диском: `/opt/render/project/src/server/data` |
@@ -84,5 +84,3 @@ node server/index.js
 ```
 
 Откройте `http://localhost:3001` и `http://localhost:3001/api/health`.
-
-Подробные CLI-инструкции для Windows — в ответе агента / документации проекта.

@@ -1,60 +1,68 @@
 import { MapPin, MessageCircle, Phone } from 'lucide-react'
 import { YoutubeIcon } from '../components/ui/YoutubeIcon'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { siteConfig } from '../data/site'
+import { useData } from '../context/DataContext'
 import { trackContactClick } from '../utils/analytics'
+import { formatWhatsAppDisplay, getInstagramLabel } from '../utils/contacts'
 import { toTelHref } from '../utils/phone'
+import { safeExternalUrl, safeWhatsAppUrl } from '../utils/safeUrl'
 import { ButtonLink } from '../components/ui/Button'
 import { InstagramIcon } from '../components/ui/InstagramIcon'
 
 export function Contacts() {
+  const { siteSettings } = useData()
+  const { contacts } = siteSettings
+  const whatsappUrl = safeWhatsAppUrl(contacts.whatsapp, contacts.whatsapp)
+  const instagramUrl = safeExternalUrl(contacts.instagram, contacts.instagram)
+  const youtubeUrl = safeExternalUrl(contacts.youtube, contacts.youtube)
+
   usePageMeta({
     title: 'Контакты — SPORT KING',
     description:
-      'Контакты SPORT KING: телефон, WhatsApp, Instagram, YouTube. Усть-Каменогорск.',
+      'Контакты SPORT KING: телефон, WhatsApp, Instagram, YouTube.',
   })
 
   const contactItems = [
     {
       icon: Phone,
       label: 'Телефон',
-      value: siteConfig.phone,
-      href: toTelHref(siteConfig.phone),
+      value: contacts.phone,
+      href: toTelHref(contacts.phone),
       track: 'phone' as const,
     },
     {
       icon: MessageCircle,
       label: 'WhatsApp',
-      value: siteConfig.phone,
-      href: siteConfig.whatsapp,
+      value: formatWhatsAppDisplay(contacts.whatsapp),
+      href: whatsappUrl,
       external: true,
       track: 'whatsapp' as const,
     },
     {
       icon: InstagramIcon,
       label: 'Instagram',
-      value: '@turnik_kzz',
-      href: siteConfig.instagram,
+      value: getInstagramLabel(contacts.instagram, contacts.instagramLabel),
+      href: instagramUrl,
       external: true,
       track: 'instagram' as const,
     },
     {
       icon: YoutubeIcon,
       label: 'YouTube',
-      value: '@SPORTKING-KZ',
-      href: siteConfig.youtube,
+      value: contacts.youtubeLabel,
+      href: youtubeUrl,
       external: true,
       track: 'youtube' as const,
     },
     {
       icon: MapPin,
       label: 'Адрес',
-      value: siteConfig.address,
+      value: contacts.address,
     },
     {
       icon: MapPin,
       label: 'Город',
-      value: siteConfig.cities.join(', '),
+      value: contacts.cities,
     },
   ]
 
@@ -64,9 +72,7 @@ export function Contacts() {
         <h1 className="text-page-title font-extrabold uppercase tracking-tight text-dark">
           Контакты
         </h1>
-        <p className="mt-4 text-base text-text-secondary md:text-lg">
-          Свяжитесь с нами для консультации по выбору оборудования.
-        </p>
+        <p className="mt-4 text-base text-text-secondary md:text-lg">{contacts.intro}</p>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           {contactItems.map((item) => {
@@ -80,9 +86,7 @@ export function Contacts() {
                   <p className="text-xs font-bold uppercase tracking-widest text-text-secondary">
                     {item.label}
                   </p>
-                  <p className="mt-1 text-base font-semibold text-dark">
-                    {item.value}
-                  </p>
+                  <p className="mt-1 text-base font-semibold text-dark">{item.value}</p>
                 </div>
               </div>
             )
@@ -110,7 +114,7 @@ export function Contacts() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:flex-wrap">
             <ButtonLink to="/catalog">Смотреть каталог</ButtonLink>
             <a
-              href={siteConfig.instagram}
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('contacts_page_instagram')}
@@ -119,7 +123,7 @@ export function Contacts() {
               Instagram
             </a>
             <a
-              href={siteConfig.youtube}
+              href={youtubeUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('contacts_page_youtube')}

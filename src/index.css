@@ -50,6 +50,15 @@
   img {
     @apply max-w-full;
   }
+
+  /* iOS Safari auto-zooms inputs below 16px — keep forms readable without zoom */
+  @media (max-width: 1023px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px;
+    }
+  }
 }
 
 @layer utilities {

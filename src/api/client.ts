@@ -66,6 +66,11 @@ export const api = {
 
   getAnalytics: () => request<AnalyticsSummary>('/api/analytics'),
 
+  getErrors: () =>
+    request<{ entries: { id: string; at: string; message: string; path: string; status: number }[] }>(
+      '/api/errors',
+    ),
+
   login: (password: string) =>
     request<{ token: string }>('/api/auth/login', {
       method: 'POST',
@@ -131,6 +136,44 @@ export const api = {
 
   deleteReview: (id: string) =>
     request<{ ok: boolean }>(`/api/reviews/${id}`, { method: 'DELETE' }),
+
+  createOrder: (payload: {
+    productId: string
+    customerName: string
+    phone: string
+    comment?: string
+  }) =>
+    request<import('../types/order').Order>('/api/orders', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  getOrders: (status?: import('../types/order').OrderStatus) => {
+    const query = status ? `?status=${encodeURIComponent(status)}` : ''
+    return request<import('../types/order').Order[]>(`/api/orders${query}`)
+  },
+
+  updateOrder: (id: string, patch: { status?: import('../types/order').OrderStatus }) =>
+    request<import('../types/order').Order>(`/api/orders/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(patch),
+    }),
+
+  deleteOrder: (id: string) =>
+    request<{ ok: boolean }>(`/api/orders/${id}`, { method: 'DELETE' }),
+
+  getSettings: () => request<import('../types/siteSettings').SiteSettings>('/api/settings'),
+
+  updateSettings: (settings: Partial<import('../types/siteSettings').SiteSettings>) =>
+    request<import('../types/siteSettings').SiteSettings>('/api/settings', {
+      method: 'PUT',
+      body: JSON.stringify(settings),
+    }),
+
+  resetSettings: () =>
+    request<import('../types/siteSettings').SiteSettings>('/api/settings/reset', {
+      method: 'POST',
+    }),
 }
 
 export async function uploadImageFile(file: File): Promise<string> {

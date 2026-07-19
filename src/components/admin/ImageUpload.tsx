@@ -7,12 +7,16 @@ interface ImageUploadProps {
   label?: string
   value: string
   onChange: (value: string) => void
+  hint?: string
+  previewClassName?: string
 }
 
 export function ImageUpload({
   label = 'Фото',
   value,
   onChange,
+  hint = 'Фото сохраняется на сервере и видно всем посетителям сайта.',
+  previewClassName = 'aspect-[4/3] w-full object-contain bg-white p-2',
 }: ImageUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
@@ -34,20 +38,19 @@ export function ImageUpload({
   }
 
   const isUploaded = value.startsWith('/uploads/')
+  const isSiteAsset = value.startsWith('/images/')
 
   return (
     <div>
       <label className="mb-2 block text-sm font-bold uppercase">{label}</label>
-      <p className="mb-3 text-xs text-text-secondary">
-        Фото сохраняется на сервере и видно всем посетителям сайта.
-      </p>
+      <p className="mb-3 text-xs text-text-secondary">{hint}</p>
 
       {value && (
         <div className="mb-3 overflow-hidden rounded-xl border border-border bg-background">
           <SmartImage
             src={value}
             alt="Превью"
-            className="aspect-[4/3] w-full object-contain bg-white p-2"
+            className={previewClassName}
             aspect=""
           />
         </div>
@@ -71,16 +74,26 @@ export function ImageUpload({
         onChange={(e) => handleFile(e.target.files?.[0])}
       />
 
-      <p className="mt-2 text-xs text-text-secondary">
-        Или вставьте ссылку на фото (Kaspi, Instagram, любой хостинг):
-      </p>
-      <input
-        type="url"
-        value={isUploaded ? '' : value}
-        placeholder="https://..."
-        onChange={(e) => onChange(e.target.value)}
-        className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-base"
-      />
+      {isSiteAsset ? (
+        <p className="mt-2 text-xs text-text-secondary">
+          Стандартное фото сайта:{' '}
+          <span className="font-mono text-dark">{value}</span>
+        </p>
+      ) : (
+        <>
+          <p className="mt-2 text-xs text-text-secondary">
+            Или вставьте ссылку на фото (Kaspi, Instagram, любой хостинг):
+          </p>
+          <input
+            type="text"
+            inputMode="url"
+            value={isUploaded ? '' : value}
+            placeholder="https://..."
+            onChange={(e) => onChange(e.target.value)}
+            className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-base"
+          />
+        </>
+      )}
 
       {isUploaded && (
         <button

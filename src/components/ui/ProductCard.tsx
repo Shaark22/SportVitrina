@@ -6,7 +6,7 @@ import { openKaspi } from '../../hooks/usePageMeta'
 import { trackProductClick } from '../../utils/analytics'
 import { Badge } from './Badge'
 import { Rating } from './Rating'
-import { Button } from './Button'
+import { Button, ButtonLink } from './Button'
 import { SmartImage } from './SmartImage'
 
 interface ProductCardProps {
@@ -88,7 +88,7 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        <div className="mt-auto pt-3 sm:pt-4">
+        <div className="mt-auto flex flex-col gap-2 pt-3 sm:pt-4">
           <Button
             className="w-full min-h-10 !px-2.5 gap-1 normal-case tracking-normal whitespace-nowrap text-[11px] sm:min-h-12 sm:!px-4 sm:gap-1.5 sm:text-sm"
             onClick={() =>
@@ -104,6 +104,14 @@ export function ProductCard({ product }: ProductCardProps) {
             <ExternalLink size={12} className="shrink-0 sm:hidden" aria-hidden />
             <ExternalLink size={14} className="hidden shrink-0 sm:block" aria-hidden />
           </Button>
+          <ButtonLink
+            to={`/product/${product.slug}/order`}
+            variant="outline"
+            className="w-full min-h-10 !px-2.5 normal-case tracking-normal whitespace-nowrap text-[11px] sm:min-h-12 sm:!px-4 sm:text-sm"
+            onClick={() => handleProductClick(product)}
+          >
+            Купить на сайте
+          </ButtonLink>
         </div>
       </div>
     </article>

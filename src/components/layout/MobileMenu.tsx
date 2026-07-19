@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { MessageCircle, X } from 'lucide-react'
 import { YoutubeIcon } from '../ui/YoutubeIcon'
-import { siteConfig } from '../../data/site'
+import { useData } from '../../context/DataContext'
 import { trackContactClick } from '../../utils/analytics'
+import { safeExternalUrl, safeWhatsAppUrl } from '../../utils/safeUrl'
 import { ButtonLink } from '../ui/Button'
 import { InstagramIcon } from '../ui/InstagramIcon'
 import { Logo } from '../ui/Logo'
@@ -22,6 +23,12 @@ const navLinks = [
 ]
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
+  const { siteSettings } = useData()
+  const { contacts } = siteSettings
+  const whatsappUrl = safeWhatsAppUrl(contacts.whatsapp, contacts.whatsapp)
+  const instagramUrl = safeExternalUrl(contacts.instagram, contacts.instagram)
+  const youtubeUrl = safeExternalUrl(contacts.youtube, contacts.youtube)
+
   useEffect(() => {
     if (!open) return
     const prev = document.body.style.overflow
@@ -76,7 +83,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="mt-auto flex flex-col gap-3 pt-6 sm:pt-8">
           <div className="grid grid-cols-3 gap-2">
             <a
-              href={siteConfig.whatsapp}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('whatsapp')}
@@ -87,7 +94,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               <span className="truncate">WhatsApp</span>
             </a>
             <a
-              href={siteConfig.instagram}
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('instagram')}
@@ -98,7 +105,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               <span className="truncate">Instagram</span>
             </a>
             <a
-              href={siteConfig.youtube}
+              href={youtubeUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('youtube')}

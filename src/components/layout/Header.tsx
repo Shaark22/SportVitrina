@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { MessageCircle, Menu } from 'lucide-react'
 import { YoutubeIcon } from '../ui/YoutubeIcon'
-import { siteConfig } from '../../data/site'
+import { useData } from '../../context/DataContext'
 import { trackContactClick } from '../../utils/analytics'
+import { safeExternalUrl, safeWhatsAppUrl } from '../../utils/safeUrl'
 import { ButtonLink } from '../ui/Button'
 import { InstagramIcon } from '../ui/InstagramIcon'
 import { Logo } from '../ui/Logo'
@@ -18,6 +19,11 @@ const navLinks = [
 ]
 
 export function Header() {
+  const { siteSettings } = useData()
+  const { contacts } = siteSettings
+  const whatsappUrl = safeWhatsAppUrl(contacts.whatsapp, contacts.whatsapp)
+  const instagramUrl = safeExternalUrl(contacts.instagram, contacts.instagram)
+  const youtubeUrl = safeExternalUrl(contacts.youtube, contacts.youtube)
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -67,7 +73,7 @@ export function Header() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <a
-              href={siteConfig.whatsapp}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('whatsapp')}
@@ -77,7 +83,7 @@ export function Header() {
               <MessageCircle size={18} />
             </a>
             <a
-              href={siteConfig.instagram}
+              href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('instagram')}
@@ -87,7 +93,7 @@ export function Header() {
               <InstagramIcon size={18} />
             </a>
             <a
-              href={siteConfig.youtube}
+              href={youtubeUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackContactClick('youtube')}

@@ -11,6 +11,7 @@ interface ProductGalleryProps {
 export function ProductGallery({ images, alt }: ProductGalleryProps) {
   const [active, setActive] = useState(0)
   const gallery = images.length ? images : []
+  const isPremiumSlide = (src: string) => src.includes('/premium-cards/')
 
   useEffect(() => {
     if (active >= gallery.length) setActive(0)
@@ -18,42 +19,60 @@ export function ProductGallery({ images, alt }: ProductGalleryProps) {
 
   if (!gallery.length) return null
 
+  const activeIsPremium = isPremiumSlide(gallery[active])
+
   return (
-    <div>
-      <div className="overflow-hidden rounded-2xl border border-border bg-white sm:rounded-3xl">
-        <div className="flex min-h-[280px] items-center justify-center p-3 sm:min-h-[360px] sm:p-4 md:min-h-[420px]">
+    <div className="min-w-0 w-full max-w-full">
+      <div
+        className={`overflow-hidden rounded-2xl border sm:rounded-3xl ${
+          activeIsPremium
+            ? 'border-dark/20 bg-[#0a0a0b]'
+            : 'border-border bg-white'
+        }`}
+      >
+        <div className="p-2 sm:p-4">
           <SmartImage
             src={gallery[active]}
             alt={alt}
-            className="max-h-[min(70vw,520px)] w-full object-contain sm:max-h-[480px]"
-            aspect=""
+            naturalHeight
+            className={activeIsPremium ? 'bg-[#0a0a0b]' : 'bg-white'}
             loading="eager"
           />
         </div>
       </div>
 
       {gallery.length > 1 && (
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {gallery.map((src, index) => (
-            <button
-              key={`${src.slice(0, 24)}-${index}`}
-              type="button"
-              onClick={() => setActive(index)}
-              className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-colors sm:h-20 sm:w-20 ${
-                index === active
-                  ? 'border-dark'
-                  : 'border-border opacity-80 hover:opacity-100'
-              }`}
-              aria-label={`Фото ${index + 1}`}
-            >
-              <SmartImage
-                src={src}
-                alt={`${alt} ${index + 1}`}
-                className="h-full w-full object-contain bg-white p-0.5"
-                aspect=""
-              />
-            </button>
-          ))}
+        <div className="mt-3 flex min-w-0 w-full max-w-full items-center justify-between gap-3">
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {gallery.map((src, index) => {
+              const premium = isPremiumSlide(src)
+              return (
+                <button
+                  key={`${src.slice(0, 24)}-${index}`}
+                  type="button"
+                  onClick={() => setActive(index)}
+                  className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-colors sm:h-20 sm:w-20 ${
+                    index === active
+                      ? 'border-primary'
+                      : 'border-border opacity-80 hover:opacity-100'
+                  } ${premium ? 'bg-[#0a0a0b]' : 'bg-white'}`}
+                  aria-label={`Фото ${index + 1}`}
+                >
+                  <SmartImage
+                    src={src}
+                    alt={`${alt} ${index + 1}`}
+                    className={`h-full w-full p-0.5 ${
+                      premium ? 'object-cover' : 'object-contain'
+                    }`}
+                    aspect=""
+                  />
+                </button>
+              )
+            })}
+          </div>
+          <span className="hidden shrink-0 text-xs font-semibold uppercase tracking-widest text-text-secondary sm:inline">
+            {active + 1} / {gallery.length}
+          </span>
         </div>
       )}
     </div>

@@ -8,6 +8,9 @@ import { AdminCategories } from './AdminCategories'
 import { AdminStatistics } from './AdminStatistics'
 import { AdminCategoryForm } from './AdminCategoryForm'
 import { AdminReviews } from './AdminReviews'
+import { AdminOrders } from './AdminOrders'
+import { AdminSettings } from './AdminSettings'
+import { AdminErrors } from './AdminErrors'
 
 export function AdminApp() {
   return (
@@ -19,10 +22,13 @@ export function AdminApp() {
         <Route path="products" element={<AdminProducts />} />
         <Route path="products/new" element={<AdminProductForm />} />
         <Route path="products/:id/edit" element={<AdminProductForm />} />
+        <Route path="orders" element={<AdminOrders />} />
         <Route path="categories" element={<AdminCategories />} />
         <Route path="categories/new" element={<AdminCategoryForm />} />
         <Route path="categories/:id/edit" element={<AdminCategoryForm />} />
         <Route path="reviews" element={<AdminReviews />} />
+        <Route path="settings" element={<AdminSettings />} />
+        <Route path="errors" element={<AdminErrors />} />
       </Route>
     </Routes>
   )

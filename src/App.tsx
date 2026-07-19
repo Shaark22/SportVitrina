@@ -9,6 +9,7 @@ import { CategoryPage } from './pages/CategoryPage'
 import { About } from './pages/About'
 import { Delivery } from './pages/Delivery'
 import { Contacts } from './pages/Contacts'
+import { OrderPage } from './pages/OrderPage'
 import { AnalyticsTracker } from './components/AnalyticsTracker'
 import { ScrollToTop } from './components/ScrollToTop'
 
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/product/:slug" element={<ProductPage />} />
+          <Route path="/product/:slug/order" element={<OrderPage />} />
           <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/delivery" element={<Delivery />} />

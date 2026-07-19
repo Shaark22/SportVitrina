@@ -16,6 +16,9 @@ dist-ssr
 !.env.example
 ngrok.log
 
+# Runtime server logs
+server/data/errors.json
+
 # Scrape / debug artifacts
 scripts/debug-*.mjs
 scripts/scrape-log.txt

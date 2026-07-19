@@ -8,7 +8,7 @@ import { formatPrice } from '../utils/formatPrice'
 import { parseVideoUrl } from '../utils/videoUrl'
 import { Badge } from '../components/ui/Badge'
 import { Rating } from '../components/ui/Rating'
-import { Button } from '../components/ui/Button'
+import { Button, ButtonLink } from '../components/ui/Button'
 import { ProductGallery, VideoModal } from '../components/ui/ProductGallery'
 import { ProductReviews } from '../components/ui/ProductReviews'
 
@@ -82,17 +82,19 @@ export function ProductPage() {
           <span className="min-w-0 max-w-full truncate text-dark">{product.name}</span>
         </nav>
 
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-          <ProductGallery images={images} alt={product.name} />
+        <div className="grid min-w-0 gap-8 lg:grid-cols-2 lg:gap-16">
+          <div className="min-w-0 max-w-full">
+            <ProductGallery images={images} alt={product.name} />
+          </div>
 
-          <div>
+          <div className="min-w-0 max-w-full">
             {product.badge && (
               <div className="mb-3 sm:mb-4">
                 <Badge label={product.badge} />
               </div>
             )}
 
-            <h1 className="text-xl font-extrabold uppercase leading-tight text-dark sm:text-3xl md:text-4xl">
+            <h1 className="break-words text-xl font-extrabold uppercase leading-tight text-dark sm:text-3xl md:text-4xl">
               {product.name}
             </h1>
 
@@ -124,8 +126,12 @@ export function ProductPage() {
               {product.inStock ? 'В наличии' : 'Нет в наличии'}
             </p>
 
-            <p className="mt-4 text-sm leading-relaxed text-text-secondary sm:mt-6 sm:text-base md:text-lg">
+            <p className="mt-4 break-words text-sm leading-relaxed text-text-secondary sm:mt-6 sm:text-base md:text-lg">
               {product.description}
+            </p>
+
+            <p className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary/15 px-3 py-2 text-sm font-semibold text-dark">
+              Доставка по Астане — в день заказа
             </p>
 
             <div className="mt-6 sm:mt-8">
@@ -136,14 +142,14 @@ export function ProductPage() {
                 {product.features.map((feature) => (
                   <li
                     key={feature}
-                    className="flex items-start gap-3 text-sm text-text-secondary sm:text-base"
+                    className="flex min-w-0 items-start gap-3 text-sm text-text-secondary sm:text-base"
                   >
                     <Check
                       size={18}
                       className="mt-0.5 shrink-0 text-primary"
                       strokeWidth={3}
                     />
-                    {feature}
+                    <span className="min-w-0 break-words">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -151,7 +157,7 @@ export function ProductPage() {
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap">
               <Button
-                className="w-full sm:w-auto sm:min-w-[280px]"
+                className="w-full sm:w-auto sm:min-w-[240px]"
                 onClick={() =>
                   openKaspi(product.kaspiUrl, {
                     id: product.id,
@@ -163,6 +169,14 @@ export function ProductPage() {
               >
                 Купить на KASPI
               </Button>
+
+              <ButtonLink
+                to={`/product/${product.slug}/order`}
+                variant="outline"
+                className="w-full sm:w-auto sm:min-w-[240px]"
+              >
+                Купить на сайте
+              </ButtonLink>
 
               {hasVideo && (
                 <Button

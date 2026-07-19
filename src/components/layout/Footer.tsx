@@ -4,9 +4,9 @@ import { MessageCircle } from 'lucide-react'
 import { YoutubeIcon } from '../ui/YoutubeIcon'
 import { useData } from '../../context/DataContext'
 import { getCategoriesWithProducts } from '../../utils/categoryCounts'
-import { siteConfig } from '../../data/site'
 import { trackContactClick } from '../../utils/analytics'
 import { toTelHref } from '../../utils/phone'
+import { safeExternalUrl, safeWhatsAppUrl } from '../../utils/safeUrl'
 import { InstagramIcon } from '../ui/InstagramIcon'
 import { Logo } from '../ui/Logo'
 
@@ -19,12 +19,17 @@ const footerLinks = [
 ]
 
 export function Footer() {
-  const { categories, products } = useData()
+  const { categories, products, siteSettings } = useData()
+  const { contacts } = siteSettings
 
   const visibleCategories = useMemo(
     () => getCategoriesWithProducts(categories, products),
     [categories, products],
   )
+
+  const whatsappUrl = safeWhatsAppUrl(contacts.whatsapp, contacts.whatsapp)
+  const instagramUrl = safeExternalUrl(contacts.instagram, contacts.instagram)
+  const youtubeUrl = safeExternalUrl(contacts.youtube, contacts.youtube)
 
   return (
     <footer className="bg-dark-secondary text-white">
@@ -35,10 +40,10 @@ export function Footer() {
               <Logo size="nav" variant="inverted" />
             </Link>
             <p className="text-sm leading-relaxed text-white/70">
-              {siteConfig.description}
+              {siteSettings.description}
             </p>
             <p className="mt-4 text-xs font-bold uppercase tracking-widest text-primary">
-              {siteConfig.tagline}
+              {siteSettings.tagline}
             </p>
           </div>
 
@@ -85,18 +90,18 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-white/70">
               <li>
                 <a
-                  href={toTelHref(siteConfig.phone)}
+                  href={toTelHref(contacts.phone)}
                   onClick={() => trackContactClick('phone')}
                   className="transition-colors hover:text-white"
                 >
-                  {siteConfig.phone}
+                  {contacts.phone}
                 </a>
               </li>
-              <li>{siteConfig.cities.join(' • ')}</li>
+              <li>{contacts.cities.replace(/,/g, ' • ')}</li>
             </ul>
             <div className="mt-6 flex gap-3">
               <a
-                href={siteConfig.whatsapp}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackContactClick('whatsapp')}
@@ -106,7 +111,7 @@ export function Footer() {
                 <MessageCircle size={18} />
               </a>
               <a
-                href={siteConfig.instagram}
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackContactClick('instagram')}
@@ -116,7 +121,7 @@ export function Footer() {
                 <InstagramIcon size={18} />
               </a>
               <a
-                href={siteConfig.youtube}
+                href={youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackContactClick('youtube')}

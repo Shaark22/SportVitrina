@@ -1,4 +1,4 @@
-import { randomBytes } from 'node:crypto'
+import { randomBytes, timingSafeEqual } from 'node:crypto'
 import {
   copyFileSync,
   existsSync,
@@ -12,6 +12,9 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import multer from 'multer'
 import { createAnalyticsStore } from './analytics.js'
+import { createErrorLog } from './errors.js'
+import { createOrdersStore } from './orders.js'
+import { createSettingsStore } from './settings.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -46,6 +49,10 @@ const DATA_DIR = process.env.DATA_DIR || join(ROOT, 'server', 'data')
 const UPLOADS_DIR = join(DATA_DIR, 'uploads')
 const STORE_PATH = join(DATA_DIR, 'store.json')
 const ANALYTICS_PATH = join(DATA_DIR, 'analytics.json')
+const ORDERS_PATH = join(DATA_DIR, 'orders.json')
+const SETTINGS_PATH = join(DATA_DIR, 'settings.json')
+const ERRORS_PATH = join(DATA_DIR, 'errors.json')
+const DEFAULT_SETTINGS_PATH = join(ROOT, 'server', 'data', 'settings.defaults.json')
 const DEFAULTS_PATH = join(ROOT, 'server', 'data', 'store.json')
 const BUNDLED_UPLOADS_DIR = join(ROOT, 'server', 'data', 'uploads')
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sportking'
@@ -53,8 +60,16 @@ const ADMIN_PATH = (process.env.ADMIN_PATH || 'sk-manage-kz8m2p').replace(/^\/|\
 const SESSION_HOURS = Number(process.env.ADMIN_SESSION_HOURS) || 8
 const LOGIN_MAX_ATTEMPTS = Number(process.env.ADMIN_LOGIN_MAX_ATTEMPTS) || 5
 const LOGIN_WINDOW_MS = Number(process.env.ADMIN_LOGIN_WINDOW_MS) || 15 * 60 * 1000
+const UPLOAD_MAX_PER_HOUR = Number(process.env.UPLOAD_MAX_PER_HOUR) || 30
 const PORT = Number(process.env.PORT) || 3001
 const isProd = process.env.NODE_ENV === 'production'
+
+if (isProd && ADMIN_PASSWORD === 'sportking') {
+  console.error(
+    'FATAL: Set a strong ADMIN_PASSWORD in production (default password is not allowed).',
+  )
+  process.exit(1)
+}
 
 mkdirSync(DATA_DIR, { recursive: true })
 mkdirSync(UPLOADS_DIR, { recursive: true })
@@ -63,6 +78,10 @@ seedDataFromProject()
 function seedDataFromProject() {
   if (!existsSync(STORE_PATH) && existsSync(DEFAULTS_PATH)) {
     writeFileSync(STORE_PATH, readFileSync(DEFAULTS_PATH, 'utf8'))
+  }
+
+  if (!existsSync(SETTINGS_PATH) && existsSync(DEFAULT_SETTINGS_PATH)) {
+    writeFileSync(SETTINGS_PATH, readFileSync(DEFAULT_SETTINGS_PATH, 'utf8'))
   }
 
   if (!existsSync(BUNDLED_UPLOADS_DIR)) return
@@ -78,8 +97,33 @@ function seedDataFromProject() {
 
 const sessions = new Map()
 const analytics = createAnalyticsStore(ANALYTICS_PATH)
+const orders = createOrdersStore(ORDERS_PATH)
+const siteSettings = createSettingsStore(SETTINGS_PATH, DEFAULT_SETTINGS_PATH)
+const errorLog = createErrorLog(ERRORS_PATH)
 const rateBuckets = new Map()
 const loginRateBuckets = new Map()
+const uploadRateBuckets = new Map()
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function safeEqualPassword(input, expected) {
+  const a = Buffer.from(String(input ?? ''))
+  const b = Buffer.from(String(expected ?? ''))
+  if (a.length !== b.length) {
+    timingSafeEqual(a, a)
+    return false
+  }
+  return timingSafeEqual(a, b)
+}
+
+function pruneExpiredSessions() {
+  const now = Date.now()
+  for (const [token, session] of sessions) {
+    if (session.expiresAt < now) sessions.delete(token)
+  }
+}
 
 function clientIp(req) {
   const forwarded = req.headers['x-forwarded-for']
@@ -102,6 +146,23 @@ function rateLimit(req, max = 120, windowMs = 60_000, buckets = rateBuckets) {
 
 function loginRateLimit(req) {
   return rateLimit(req, LOGIN_MAX_ATTEMPTS, LOGIN_WINDOW_MS, loginRateBuckets)
+}
+
+function uploadRateLimit(req) {
+  return rateLimit(req, UPLOAD_MAX_PER_HOUR, 60 * 60 * 1000, uploadRateBuckets)
+}
+
+function logApiError(req, err, status = 500) {
+  try {
+    errorLog.logError({
+      message: err?.message || String(err),
+      path: req?.originalUrl || req?.url,
+      status,
+      stack: err?.stack,
+    })
+  } catch {
+    /* ignore logging failures */
+  }
 }
 
 function readStore() {
@@ -151,6 +212,7 @@ function slugify(text) {
 }
 
 function authMiddleware(req, res, next) {
+  pruneExpiredSessions()
   const header = req.headers.authorization || ''
   const token = header.startsWith('Bearer ') ? header.slice(7) : ''
   const session = sessions.get(token)
@@ -175,6 +237,11 @@ const upload = multer({
   storage,
   limits: { fileSize: 8 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
+    const ext = file.originalname.split('.').pop()?.toLowerCase() || ''
+    if (ext === 'svg' || file.mimetype === 'image/svg+xml') {
+      cb(new Error('SVG uploads are not allowed'))
+      return
+    }
     if (file.mimetype.startsWith('image/')) cb(null, true)
     else cb(new Error('Only images allowed'))
   },
@@ -203,6 +270,28 @@ app.get('/api/store', (_req, res) => {
   res.json(readStore())
 })
 
+app.get('/api/settings', (_req, res) => {
+  res.json(siteSettings.getSettings())
+})
+
+app.put('/api/settings', authMiddleware, (req, res) => {
+  try {
+    const updated = siteSettings.updateSettings(req.body || {})
+    res.json(updated)
+  } catch (err) {
+    res.status(400).json({ error: err.message || 'Не удалось сохранить настройки' })
+  }
+})
+
+app.post('/api/settings/reset', authMiddleware, (_req, res) => {
+  try {
+    res.json(siteSettings.resetSettings())
+  } catch (err) {
+    logApiError(req, err, 500)
+    res.status(500).json({ error: err.message || 'Не удалось сбросить настройки' })
+  }
+})
+
 app.post('/api/auth/login', (req, res) => {
   if (!loginRateLimit(req)) {
     return res.status(429).json({
@@ -211,12 +300,12 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   const { password } = req.body || {}
-  if (password !== ADMIN_PASSWORD) {
+  if (!safeEqualPassword(password, ADMIN_PASSWORD)) {
     return res.status(401).json({ error: 'Неверный пароль' })
   }
 
-  const ip = clientIp(req)
-  loginRateBuckets.delete(ip)
+  pruneExpiredSessions()
+  loginRateBuckets.delete(clientIp(req))
 
   const token = randomBytes(32).toString('hex')
   sessions.set(token, {
@@ -226,6 +315,7 @@ app.post('/api/auth/login', (req, res) => {
 })
 
 app.get('/api/auth/me', (req, res) => {
+  pruneExpiredSessions()
   const header = req.headers.authorization || ''
   const token = header.startsWith('Bearer ') ? header.slice(7) : ''
   const session = sessions.get(token)
@@ -233,6 +323,62 @@ app.get('/api/auth/me', (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' })
   }
   res.json({ ok: true })
+})
+
+app.post('/api/orders', (req, res) => {
+  if (!rateLimit(req, 15, 60 * 60 * 1000)) {
+    return res.status(429).json({ error: 'Слишком много заявок. Попробуйте позже.' })
+  }
+  try {
+    const store = readStore()
+    const body = req.body || {}
+    const productId = String(body.productId || '').trim()
+    const product = store.products.find((p) => p.id === productId)
+    if (!product) {
+      return res.status(404).json({ error: 'Товар не найден' })
+    }
+    const order = orders.createOrder({
+      productId: product.id,
+      productName: product.name,
+      productSlug: product.slug,
+      productPrice: product.price,
+      customerName: body.customerName,
+      phone: body.phone,
+      comment: body.comment,
+    })
+    res.status(201).json(order)
+  } catch (err) {
+    res.status(400).json({ error: err.message || 'Не удалось отправить заявку' })
+  }
+})
+
+app.get('/api/orders', authMiddleware, (req, res) => {
+  try {
+    const status = typeof req.query.status === 'string' ? req.query.status : undefined
+    res.json(orders.listOrders({ status }))
+  } catch (err) {
+    logApiError(req, err, 500)
+    res.status(500).json({ error: err.message || 'Ошибка загрузки заявок' })
+  }
+})
+
+app.patch('/api/orders/:id', authMiddleware, (req, res) => {
+  try {
+    const order = orders.updateOrder(req.params.id, req.body || {})
+    res.json(order)
+  } catch (err) {
+    const status = err.message === 'Заявка не найдена' ? 404 : 400
+    res.status(status).json({ error: err.message || 'Не удалось обновить заявку' })
+  }
+})
+
+app.delete('/api/orders/:id', authMiddleware, (req, res) => {
+  try {
+    res.json(orders.deleteOrder(req.params.id))
+  } catch (err) {
+    const status = err.message === 'Заявка не найдена' ? 404 : 400
+    res.status(status).json({ error: err.message || 'Не удалось удалить заявку' })
+  }
 })
 
 app.post('/api/analytics/event', (req, res) => {
@@ -252,6 +398,7 @@ app.get('/api/analytics', authMiddleware, (_req, res) => {
     const store = readStore()
     res.json(analytics.getSummary(store?.products ?? []))
   } catch (err) {
+    logApiError(req, err, 500)
     res.status(500).json({ error: err.message || 'Ошибка статистики' })
   }
 })
@@ -263,9 +410,18 @@ app.post('/api/auth/logout', authMiddleware, (req, res) => {
   res.json({ ok: true })
 })
 
-app.post('/api/upload', authMiddleware, upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
-  res.json({ url: `/uploads/${req.file.filename}` })
+app.post('/api/upload', authMiddleware, (req, res, _next) => {
+  if (!uploadRateLimit(req)) {
+    return res.status(429).json({ error: 'Слишком много загрузок. Попробуйте позже.' })
+  }
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      const status = err.code === 'LIMIT_FILE_SIZE' ? 413 : 400
+      return res.status(status).json({ error: err.message || 'Upload failed' })
+    }
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' })
+    res.json({ url: `/uploads/${req.file.filename}` })
+  })
 })
 
 app.post('/api/products', authMiddleware, (req, res) => {
@@ -289,6 +445,7 @@ app.put('/api/products/:id', authMiddleware, (req, res) => {
   const index = store.products.findIndex((p) => p.id === req.params.id)
   if (index === -1) return res.status(404).json({ error: 'Not found' })
   const patch = { ...req.body }
+  delete patch.id
   if (typeof patch.rating === 'number') {
     patch.rating = Math.min(5, Math.max(0, patch.rating))
   }
@@ -380,6 +537,9 @@ app.post('/api/categories', authMiddleware, (req, res) => {
   const store = readStore()
   const data = req.body
   const id = data.id || data.slug || slugify(data.name)
+  if (store.categories.some((c) => c.id === id)) {
+    return res.status(409).json({ error: 'Категория с таким ID уже существует' })
+  }
   const category = { ...data, id }
   store.categories.push(category)
   writeStore(store)
@@ -420,7 +580,24 @@ app.post('/api/store/reset', authMiddleware, (_req, res) => {
   res.json(readStore())
 })
 
-app.use('/uploads', express.static(UPLOADS_DIR))
+app.get('/api/errors', authMiddleware, (req, res) => {
+  try {
+    const limit = Math.min(Number(req.query.limit) || 50, 100)
+    res.json({ entries: errorLog.listErrors(limit) })
+  } catch (err) {
+    logApiError(req, err, 500)
+    res.status(500).json({ error: err.message || 'Ошибка загрузки логов' })
+  }
+})
+
+app.use('/uploads', express.static(UPLOADS_DIR, {
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.svg')) {
+      res.setHeader('Content-Type', 'application/octet-stream')
+      res.setHeader('Content-Disposition', 'attachment')
+    }
+  },
+}))
 
 if (isProd) {
   const distPath = join(ROOT, 'dist')
@@ -429,7 +606,7 @@ if (isProd) {
     res.status(404).type('text/plain').send('Not Found')
   })
 
-  app.get(new RegExp(`^/${ADMIN_PATH}(/.*)?$`), (_req, res) => {
+  app.get(new RegExp(`^/${escapeRegExp(ADMIN_PATH)}(/.*)?$`), (_req, res) => {
     res.sendFile(join(distPath, 'admin.html'))
   })
 
@@ -440,8 +617,10 @@ if (isProd) {
   })
 }
 
-app.use((err, _req, res, _next) => {
-  res.status(400).json({ error: err.message || 'Server error' })
+app.use((err, req, res, _next) => {
+  const status = err.code === 'LIMIT_FILE_SIZE' ? 413 : 400
+  if (status >= 500) logApiError(req, err, status)
+  res.status(status).json({ error: err.message || 'Server error' })
 })
 
 app.listen(PORT, () => {
