@@ -1,88 +1,67 @@
-# Деплой SPORT KING (бесплатно)
+# Деплой SPORT KING на Render
 
-## Рекомендуется: Render.com
+## Рекомендуемый план: **Starter** (~$7/мес)
 
-Бесплатный план: сайт работает 24/7, но **засыпает** после 15 минут без посетителей.  
-Первый заход после сна — загрузка 30–60 секунд. Для показа заказчику — нормально.
+- Сайт **не засыпает** (в отличие от Free)
+- Подходит для постоянной работы и админки
+- Можно подключить **persistent disk** — товары, фото и аналитика сохраняются при redeploy
 
-### Шаг 1 — GitHub
-
-1. Зайдите на [github.com](https://github.com) и создайте аккаунт (если нет).
-2. Нажмите **New repository** → имя: `sport-king` → **Create repository**.
-3. В папке проекта выполните в терминале:
-
-```bash
-cd C:\Users\SenetUser\sport-king
-git init
-git add .
-git commit -m "SPORT KING — готовый сайт с админкой"
-git branch -M main
-git remote add origin https://github.com/ВАШ_ЛОГИН/sport-king.git
-git push -u origin main
-```
-
-Замените `ВАШ_ЛОГИН` на свой логин GitHub.
-
-### Шаг 2 — Render
-
-1. Зайдите на [render.com](https://render.com) → **Get Started** → войдите через GitHub.
-2. **New +** → **Web Service**.
-3. Подключите репозиторий `sport-king`.
-4. Настройки (подставятся из `render.yaml`, проверьте):
-
-| Поле | Значение |
-|------|----------|
-| Build Command | `npm install && npm run build` |
-| Start Command | `node server/index.js` |
-| Plan | **Free** |
-
-5. **Environment Variables** → добавьте:
-   - `NODE_ENV` = `production`
-   - `ADMIN_PASSWORD` = ваш пароль (например `sportking2026`)
-
-6. Нажмите **Create Web Service**.
-
-7. Через 3–5 минут появится ссылка вида:  
-   `https://sport-king-xxxx.onrender.com`
-
-### Шаг 3 — Отправить заказчику
-
-- Сайт: `https://ваш-url.onrender.com`
-- Админка: `https://ваш-url.onrender.com/admin/login`
-- Пароль: тот, что задали в `ADMIN_PASSWORD`
+Free-план возможен для демо, но после 15 минут без трафика сервис «засыпает» (первый заход 30–60 с).
 
 ---
 
-## Что сохраняется на Render (бесплатно)
+## Переменные окружения (Render)
 
-- Товары и категории из `server/data/store.json` (из репозитория).
-- Загруженные фото из `server/data/uploads/` (если закоммичены в git).
+| Переменная | Обязательно | Описание |
+|------------|-------------|----------|
+| `NODE_ENV` | да | `production` |
+| `ADMIN_PASSWORD` | **да** | Пароль админки (секрет) |
+| `ADMIN_PATH` | нет | Путь без `/`, default `sk-manage-kz8m2p` |
+| `VITE_ADMIN_BASE` | да* | `/${ADMIN_PATH}` — нужен **на этапе build** |
+| `DATA_DIR` | нет | Каталог данных; на Render с диском: `/opt/render/project/src/server/data` |
+| `PORT` | — | Render задаёт автоматически |
 
-После деплоя заказчик может загружать фото в админке — они сохранятся на сервере.  
-При **новом деплое** (обновление кода) загрузки могут сброситься, если не закоммитить `server/data/` снова.
+\* Если меняете `ADMIN_PATH`, обновите `VITE_ADMIN_BASE` и сделайте **Clear build cache & deploy**.
 
----
-
-## Быстрый показ с компьютера (без деплоя)
-
-Если нужно показать **прямо сейчас**, пока ПК включён:
-
-```bash
-npm run dev
-```
-
-Установите [ngrok](https://ngrok.com), затем в другом терминале:
-
-```bash
-ngrok http 5173
-```
-
-Скопируйте ссылку `https://....ngrok-free.dev` и отправьте заказчику.  
-Работает только пока ваш компьютер и `npm run dev` запущены.
+Полный список — в `.env.example`.
 
 ---
 
-## Обновление сайта после правок
+## Blueprint (`render.yaml`)
+
+В корне репозитория уже есть `render.yaml`:
+
+- Web service, Node, `npm install && npm run build`, `node server/index.js`
+- `healthCheckPath: /api/health`
+- Persistent disk 1 GB → `server/data`
+- План **starter**
+
+### Деплой через Dashboard
+
+1. [render.com](https://render.com) → **New +** → **Blueprint**
+2. Подключите GitHub-репозиторий
+3. При создании введите `ADMIN_PASSWORD`
+4. Дождитесь deploy (~3–5 мин)
+
+### Проверка после деплоя
+
+- Сайт: `https://<service>.onrender.com`
+- Health: `https://<service>.onrender.com/api/health` → `{"ok":true}`
+- Админка: `https://<service>.onrender.com/sk-manage-kz8m2p/login` (или ваш `ADMIN_PATH`)
+
+---
+
+## Persistent disk
+
+В `render.yaml` диск смонтирован в `/opt/render/project/src/server/data` — туда пишутся `store.json`, `uploads/` и `analytics.json`.
+
+При **первом** deploy данные копируются из репозитория (`server/data/store.json`). Дальше изменения в админке сохраняются на диске.
+
+Увеличить размер диска можно в Dashboard → сервис → **Disks** (уменьшить нельзя).
+
+---
+
+## Обновление после правок в коде
 
 ```bash
 git add .
@@ -90,4 +69,20 @@ git commit -m "обновление"
 git push
 ```
 
-Render автоматически пересоберёт сайт за 3–5 минут.
+Render пересоберёт сервис автоматически (если включён auto-deploy).
+
+---
+
+## Локальная проверка production-режима
+
+```powershell
+cd C:\Users\Максипати\Projects\sport-king
+npm run build
+$env:NODE_ENV="production"
+$env:ADMIN_PASSWORD="test-password"
+node server/index.js
+```
+
+Откройте `http://localhost:3001` и `http://localhost:3001/api/health`.
+
+Подробные CLI-инструкции для Windows — в ответе агента / документации проекта.

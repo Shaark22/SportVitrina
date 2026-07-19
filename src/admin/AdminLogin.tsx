@@ -12,7 +12,7 @@ export function AdminLogin() {
   const [submitting, setSubmitting] = useState(false)
 
   if (isAdmin) {
-    return <Navigate to="/admin" replace />
+    return <Navigate to="/" replace />
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -21,9 +21,9 @@ export function AdminLogin() {
     setError('')
     try {
       await login(password)
-      navigate('/admin')
-    } catch {
-      setError('Неверный пароль')
+      navigate('/')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Неверный пароль')
     } finally {
       setSubmitting(false)
     }
@@ -33,7 +33,7 @@ export function AdminLogin() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md rounded-3xl border border-border bg-surface p-6 sm:p-8">
         <div className="mb-8 flex justify-center">
-          <Logo className="h-12 w-[150px] sm:h-14 sm:w-[180px]" />
+          <Logo size="hero" />
         </div>
         <h1 className="text-center text-2xl font-extrabold uppercase text-dark">
           Вход в админку

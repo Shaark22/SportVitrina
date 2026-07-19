@@ -3,11 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "vite",
     "dev:server": "node server/index.js",
     "seed": "node scripts/seed-store.mjs",
+    "scrape:kaspi": "node scripts/scrape-kaspi-merchant.mjs",
+    "scrape:kaspi:full": "node scripts/scrape-kaspi-merchant.mjs --full",
+    "recategorize": "node scripts/category-utils.mjs",
+    "qa": "node scripts/qa-smoke.mjs",
     "build": "tsc -b && vite build",
     "start": "node server/index.js",
     "lint": "oxlint",
@@ -28,8 +35,8 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "concurrently": "^9.2.1",
-    "cross-env": "^10.1.0",
     "oxlint": "^1.71.0",
+    "puppeteer": "^25.3.0",
     "tailwindcss": "^4.3.2",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"

@@ -35,6 +35,7 @@ export interface StoreData {
   version: number
   products: import('../types/product').Product[]
   categories: import('../types/category').Category[]
+  reviews: import('../types/review').Review[]
 }
 
 export interface AnalyticsSummary {
@@ -115,6 +116,21 @@ export const api = {
 
   resetStore: () =>
     request<StoreData>('/api/store/reset', { method: 'POST' }),
+
+  createReview: (review: Omit<import('../types/review').Review, 'id'> & { id?: string }) =>
+    request<import('../types/review').Review>('/api/reviews', {
+      method: 'POST',
+      body: JSON.stringify(review),
+    }),
+
+  updateReview: (id: string, review: Partial<import('../types/review').Review>) =>
+    request<import('../types/review').Review>(`/api/reviews/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(review),
+    }),
+
+  deleteReview: (id: string) =>
+    request<{ ok: boolean }>(`/api/reviews/${id}`, { method: 'DELETE' }),
 }
 
 export async function uploadImageFile(file: File): Promise<string> {

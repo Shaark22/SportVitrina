@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { useData } from '../context/DataContext'
+import { getCategoriesWithProducts } from '../utils/categoryCounts'
 import { ProductCard } from '../components/ui/ProductCard'
+import { ProductGrid } from '../components/ui/ProductGrid'
 import { SectionTitle } from '../components/ui/SectionTitle'
 import { Button } from '../components/ui/Button'
 import type { Product } from '../types/product'
@@ -24,6 +26,11 @@ export function Catalog() {
   const [minRating, setMinRating] = useState('')
   const [inStockOnly, setInStockOnly] = useState(false)
   const [sort, setSort] = useState<SortOption>('popular')
+
+  const filterCategories = useMemo(
+    () => getCategoriesWithProducts(categories, products),
+    [categories, products],
+  )
 
   const filtered = useMemo(() => {
     let result: Product[] = [...products]
@@ -73,7 +80,7 @@ export function Catalog() {
           className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm"
         >
           <option value="">Все категории</option>
-          {categories.map((c) => (
+          {filterCategories.map((c) => (
             <option key={c.slug} value={c.slug}>
               {c.name}
             </option>
@@ -133,7 +140,7 @@ export function Catalog() {
 
   return (
     <div className="bg-background py-10 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="site-container">
         <SectionTitle
           title="Каталог спортивного оборудования"
           subtitle="Выберите оборудование для домашних тренировок и покупайте на Kaspi."
@@ -181,11 +188,11 @@ export function Catalog() {
               Найдено: {filtered.length} товаров
             </p>
             {filtered.length > 0 ? (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 2xl:grid-cols-4">
+              <ProductGrid>
                 {filtered.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
-              </div>
+              </ProductGrid>
             ) : (
               <div className="rounded-2xl border border-border bg-surface p-12 text-center">
                 <p className="text-lg font-semibold text-dark">

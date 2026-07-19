@@ -37,13 +37,13 @@ export function Header() {
             : 'bg-background'
         }`}
       >
-        <div className="mx-auto flex min-w-0 max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:gap-3 sm:px-6 sm:py-4 lg:px-8">
+        <div className="site-container flex min-w-0 items-center justify-between gap-2 py-3 sm:gap-3 sm:py-4">
           <Link
             to="/"
             className="flex min-w-0 max-w-[58%] shrink items-center sm:max-w-none"
             aria-label="SPORT KING — на главную"
           >
-            <Logo className="h-9 w-[108px] sm:h-11 sm:w-[140px] md:h-12 md:w-[160px]" />
+            <Logo size="nav" />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex" aria-label="Основная навигация">

@@ -56,4 +56,20 @@ export const defaultCategories: Category[] = [
     image: placeholderImages.accessories,
     priceFrom: 19990,
   },
+  {
+    id: 'skami',
+    name: 'Скамьи',
+    slug: 'skami',
+    description: 'Скамьи для жима, пресса и силовых тренировок дома.',
+    image: placeholderImages.product,
+    priceFrom: 34900,
+  },
+  {
+    id: 'supports',
+    name: 'Упоры',
+    slug: 'supports',
+    description: 'Упоры для пресса и функциональных тренировок.',
+    image: placeholderImages.crossbar,
+    priceFrom: 9900,
+  },
 ]

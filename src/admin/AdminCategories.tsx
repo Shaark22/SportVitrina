@@ -14,7 +14,7 @@ export function AdminCategories() {
         <h1 className="text-2xl font-extrabold uppercase text-dark sm:text-4xl">
           Категории
         </h1>
-        <ButtonLink to="/admin/categories/new">
+        <ButtonLink to="/categories/new">
           <Plus size={16} />
           Добавить категорию
         </ButtonLink>
@@ -44,7 +44,7 @@ export function AdminCategories() {
               </div>
               <div className="flex gap-2">
                 <Link
-                  to={`/admin/categories/${category.id}/edit`}
+                  to={`/categories/${category.id}/edit`}
                   className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-bold uppercase sm:flex-none"
                 >
                   <Pencil size={16} />

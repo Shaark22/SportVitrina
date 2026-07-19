@@ -42,7 +42,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
       />
       <div className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col bg-surface p-5 shadow-2xl animate-slide-up supports-[padding:max(0px)]:pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:p-6">
         <div className="mb-6 flex min-w-0 items-center justify-between gap-3 sm:mb-8">
-          <Logo className="h-9 w-[108px]" />
+          <Logo size="nav" />
           <button
             type="button"
             onClick={onClose}

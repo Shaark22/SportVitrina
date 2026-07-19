@@ -1,9 +1,19 @@
 interface LogoProps {
   className?: string
   variant?: 'default' | 'inverted'
+  size?: 'nav' | 'hero'
 }
 
-export function Logo({ className = '', variant = 'default' }: LogoProps) {
+const sizeClasses: Record<NonNullable<LogoProps['size']>, string> = {
+  nav: 'h-9 w-auto sm:h-10',
+  hero: 'h-11 w-auto sm:h-12',
+}
+
+export function Logo({
+  className = '',
+  variant = 'default',
+  size = 'nav',
+}: LogoProps) {
   const src =
     variant === 'inverted'
       ? '/logo/sportking-logo-light.svg?v=1'
@@ -13,7 +23,7 @@ export function Logo({ className = '', variant = 'default' }: LogoProps) {
     <img
       src={src}
       alt="SPORT KING"
-      className={`block shrink-0 object-contain object-left ${className}`}
+      className={`block shrink-0 object-contain object-left ${sizeClasses[size]} ${className}`}
       draggable={false}
     />
   )

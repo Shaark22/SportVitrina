@@ -11,7 +11,7 @@ export function About() {
   return (
     <div className="bg-background py-12 md:py-16">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extrabold uppercase tracking-tight text-dark md:text-5xl lg:text-[56px]">
+        <h1 className="text-page-title font-extrabold uppercase tracking-tight text-dark">
           О SPORT KING
         </h1>
 

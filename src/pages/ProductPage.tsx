@@ -10,12 +10,14 @@ import { Badge } from '../components/ui/Badge'
 import { Rating } from '../components/ui/Rating'
 import { Button } from '../components/ui/Button'
 import { ProductGallery, VideoModal } from '../components/ui/ProductGallery'
+import { ProductReviews } from '../components/ui/ProductReviews'
 
 export function ProductPage() {
   const { slug = '' } = useParams()
-  const { getProductBySlug, getCategoryBySlug } = useData()
+  const { getProductBySlug, getCategoryBySlug, getReviewsByProductId } = useData()
   const product = getProductBySlug(slug)
   const category = product ? getCategoryBySlug(product.category) : undefined
+  const reviews = product ? getReviewsByProductId(product.id) : []
   const [videoOpen, setVideoOpen] = useState(false)
 
   usePageMeta({
@@ -33,11 +35,11 @@ export function ProductPage() {
       slug: product.slug,
       name: product.name,
     })
-  }, [product?.id, product?.slug, product?.name])
+  }, [product])
 
   if (!product) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
+      <div className="site-container py-20 text-center">
         <h1 className="text-2xl font-extrabold uppercase text-dark sm:text-3xl">
           Товар не найден
         </h1>
@@ -56,7 +58,7 @@ export function ProductPage() {
 
   return (
     <div className="bg-background py-10 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="site-container">
         <nav
           className="mb-6 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs text-text-secondary sm:text-sm"
           aria-label="Хлебные крошки"
@@ -157,6 +159,7 @@ export function ProductPage() {
                     name: product.name,
                   })
                 }
+                aria-label={`Купить ${product.name} на Kaspi`}
               >
                 Купить на KASPI
               </Button>
@@ -174,6 +177,8 @@ export function ProductPage() {
             </div>
           </div>
         </div>
+
+        <ProductReviews reviews={reviews} />
       </div>
 
       {videoOpen && product.videoUrl && (

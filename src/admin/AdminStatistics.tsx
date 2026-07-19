@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   BarChart3,
   MousePointerClick,
@@ -8,6 +7,7 @@ import {
 } from 'lucide-react'
 import { api, type AnalyticsSummary } from '../api/client'
 import { formatNumber } from '../utils/formatPrice'
+import { publicSiteUrl } from './publicSiteUrl'
 
 function StatCard({
   label,
@@ -67,13 +67,14 @@ function ProductRankList({
                     {item.name}
                   </p>
                   {item.slug && (
-                    <Link
-                      to={`/product/${item.slug}`}
+                    <a
+                      href={publicSiteUrl(`/product/${item.slug}`)}
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-xs text-text-secondary underline underline-offset-2"
                     >
                       Открыть на сайте
-                    </Link>
+                    </a>
                   )}
                 </div>
               </div>

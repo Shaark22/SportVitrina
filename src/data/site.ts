@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: 'SPORT KING',
-  tagline: 'ТРЕНИРУЙСЯ ДОМА. СТАНОВИСЬ СИЛЬНЕЕ.',
+  tagline: 'ТРЕНИРУЙСЯ ДОМА. Когда удобно.',
   description:
     'Современное спортивное оборудование для домашних тренировок. Шведские стенки, турники, брусья и комплексы 3-в-1.',
   phone: '+7 778 576 6700',
@@ -10,5 +10,4 @@ export const siteConfig = {
   kaspiCatalog: 'https://kaspi.kz/shop/search/?q=:allMerchants:444052',
   cities: ['Усть-Каменогорск'],
   address: 'Усть-Каменогорск, проспект Сатпаева',
-  adminPassword: 'sportking',
 }

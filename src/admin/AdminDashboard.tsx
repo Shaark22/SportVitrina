@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Package, Tags, Plus, BarChart3 } from 'lucide-react'
 import { useData } from '../context/DataContext'
 import { ButtonLink } from '../components/ui/Button'
+import { publicSiteUrl } from './publicSiteUrl'
 
 export function AdminDashboard() {
   const { products, categories } = useData()
@@ -27,7 +28,7 @@ export function AdminDashboard() {
               <p className="text-sm text-text-secondary">Посещения и клики</p>
             </div>
           </div>
-          <ButtonLink to="/admin/statistics" className="mt-6 w-full">
+          <ButtonLink to="/statistics" className="mt-6 w-full">
             Открыть статистику
           </ButtonLink>
         </div>
@@ -43,10 +44,10 @@ export function AdminDashboard() {
             </div>
           </div>
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-            <ButtonLink to="/admin/products" variant="outline" className="flex-1">
+            <ButtonLink to="/products" variant="outline" className="flex-1">
               Все товары
             </ButtonLink>
-            <ButtonLink to="/admin/products/new" className="flex-1">
+            <ButtonLink to="/products/new" className="flex-1">
               <Plus size={16} />
               Добавить
             </ButtonLink>
@@ -66,10 +67,10 @@ export function AdminDashboard() {
             </div>
           </div>
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-            <ButtonLink to="/admin/categories" variant="outline" className="flex-1">
+            <ButtonLink to="/categories" variant="outline" className="flex-1">
               Все категории
             </ButtonLink>
-            <ButtonLink to="/admin/categories/new" className="flex-1">
+            <ButtonLink to="/categories/new" className="flex-1">
               <Plus size={16} />
               Добавить
             </ButtonLink>
@@ -81,17 +82,14 @@ export function AdminDashboard() {
         <h2 className="text-lg font-bold uppercase text-dark">Быстрые ссылки</h2>
         <ul className="mt-4 space-y-2 text-sm">
           <li>
-            <Link to="/catalog" className="font-semibold text-dark underline decoration-primary underline-offset-4">
+            <a href={publicSiteUrl('/catalog')} className="font-semibold text-dark underline decoration-primary underline-offset-4">
               Открыть каталог на сайте
-            </Link>
+            </a>
           </li>
           <li>
-            <Link to="/admin/statistics" className="font-semibold text-dark underline decoration-primary underline-offset-4">
+            <Link to="/statistics" className="font-semibold text-dark underline decoration-primary underline-offset-4">
               Статистика посещений и спроса
             </Link>
-          </li>
-          <li className="text-text-secondary">
-            Пароль админки задаётся переменной <code>ADMIN_PASSWORD</code> на сервере
           </li>
         </ul>
       </div>

@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { isTrackablePublicPath } from './publicPaths.js'
 
 const CONTACT_TYPES = new Set([
   'whatsapp',
@@ -210,7 +211,7 @@ export function createAnalyticsStore(analyticsPath) {
 
     if (payload.type === 'page_view') {
       const path = String(payload.path || '/').slice(0, 200)
-      if (path.startsWith('/admin')) return data
+      if (!isTrackablePublicPath(path)) return data
       registerUniqueVisitor(data, daily, visitorId)
       data.totals.pageViews += 1
       daily.pageViews += 1

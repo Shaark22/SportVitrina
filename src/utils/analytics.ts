@@ -1,3 +1,5 @@
+import { isTrackablePublicPath } from './publicPaths'
+
 export type ContactType =
   | 'whatsapp'
   | 'instagram'
@@ -63,7 +65,7 @@ function send(payload: TrackPayload) {
 }
 
 export function trackPageView(path: string) {
-  if (path.startsWith('/admin')) return
+  if (!isTrackablePublicPath(path)) return
   if (!markSessionOnce(`page:${path}`)) return
   send({ type: 'page_view', path, visitorId: getVisitorId() })
 }

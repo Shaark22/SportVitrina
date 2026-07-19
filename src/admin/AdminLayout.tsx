@@ -1,13 +1,15 @@
 import { useLocation, Navigate, Outlet, NavLink, Link } from 'react-router-dom'
-import { LayoutGrid, Package, Tags, LogOut, ExternalLink, BarChart3 } from 'lucide-react'
+import { LayoutGrid, Package, Tags, LogOut, ExternalLink, BarChart3, MessageSquare } from 'lucide-react'
 import { useData } from '../context/DataContext'
 import { Logo } from '../components/ui/Logo'
+import { publicSiteUrl } from './publicSiteUrl'
 
 const links = [
-  { to: '/admin', label: 'Обзор', icon: LayoutGrid, end: true },
-  { to: '/admin/statistics', label: 'Статистика', icon: BarChart3 },
-  { to: '/admin/products', label: 'Товары', icon: Package },
-  { to: '/admin/categories', label: 'Категории', icon: Tags },
+  { to: '/', label: 'Обзор', icon: LayoutGrid, end: true },
+  { to: '/statistics', label: 'Статистика', icon: BarChart3 },
+  { to: '/products', label: 'Товары', icon: Package },
+  { to: '/reviews', label: 'Отзывы', icon: MessageSquare },
+  { to: '/categories', label: 'Категории', icon: Tags },
 ]
 
 export function AdminLayout() {
@@ -15,28 +17,29 @@ export function AdminLayout() {
   const location = useLocation()
 
   if (!isAdmin) {
-    return <Navigate to="/admin/login" replace />
+    return <Navigate to="/login" replace />
   }
 
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-surface">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link to="/admin" className="flex items-center gap-3">
-            <Logo className="h-9 w-[108px] sm:h-10 sm:w-[130px]" />
+          <Link to="/" className="flex items-center gap-3">
+            <Logo size="nav" />
             <span className="hidden text-xs font-bold uppercase tracking-widest text-text-secondary sm:inline">
               Админ
             </span>
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link
-              to="/"
+            <a
+              href={publicSiteUrl('/')}
               target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-border px-3 text-xs font-bold uppercase tracking-wide text-dark sm:px-4 sm:text-sm"
             >
               <ExternalLink size={16} />
               <span className="hidden sm:inline">На сайт</span>
-            </Link>
+            </a>
             <button
               type="button"
               onClick={logout}

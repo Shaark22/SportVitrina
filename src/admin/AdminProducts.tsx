@@ -17,7 +17,7 @@ export function AdminProducts() {
         <h1 className="text-2xl font-extrabold uppercase text-dark sm:text-4xl">
           Товары
         </h1>
-        <ButtonLink to="/admin/products/new">
+        <ButtonLink to="/products/new">
           <Plus size={16} />
           Добавить товар
         </ButtonLink>
@@ -45,7 +45,7 @@ export function AdminProducts() {
             </div>
             <div className="flex gap-2">
               <Link
-                to={`/admin/products/${product.id}/edit`}
+                to={`/products/${product.id}/edit`}
                 className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-bold uppercase sm:flex-none"
               >
                 <Pencil size={16} />

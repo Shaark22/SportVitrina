@@ -15,6 +15,33 @@ import { createAnalyticsStore } from './analytics.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
+
+function loadEnvFile() {
+  const envPath = join(ROOT, '.env')
+  if (!existsSync(envPath)) return
+  const fromFile = {}
+  for (const line of readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const idx = trimmed.indexOf('=')
+    if (idx === -1) continue
+    const key = trimmed.slice(0, idx).trim()
+    let value = trimmed.slice(idx + 1).trim()
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1)
+    }
+    fromFile[key] = value
+  }
+  for (const [key, value] of Object.entries(fromFile)) {
+    if (process.env[key] === undefined) process.env[key] = value
+  }
+}
+
+loadEnvFile()
+
 const DATA_DIR = process.env.DATA_DIR || join(ROOT, 'server', 'data')
 const UPLOADS_DIR = join(DATA_DIR, 'uploads')
 const STORE_PATH = join(DATA_DIR, 'store.json')
@@ -22,6 +49,10 @@ const ANALYTICS_PATH = join(DATA_DIR, 'analytics.json')
 const DEFAULTS_PATH = join(ROOT, 'server', 'data', 'store.json')
 const BUNDLED_UPLOADS_DIR = join(ROOT, 'server', 'data', 'uploads')
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'sportking'
+const ADMIN_PATH = (process.env.ADMIN_PATH || 'sk-manage-kz8m2p').replace(/^\/|\/$/g, '')
+const SESSION_HOURS = Number(process.env.ADMIN_SESSION_HOURS) || 8
+const LOGIN_MAX_ATTEMPTS = Number(process.env.ADMIN_LOGIN_MAX_ATTEMPTS) || 5
+const LOGIN_WINDOW_MS = Number(process.env.ADMIN_LOGIN_WINDOW_MS) || 15 * 60 * 1000
 const PORT = Number(process.env.PORT) || 3001
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -48,6 +79,7 @@ function seedDataFromProject() {
 const sessions = new Map()
 const analytics = createAnalyticsStore(ANALYTICS_PATH)
 const rateBuckets = new Map()
+const loginRateBuckets = new Map()
 
 function clientIp(req) {
   const forwarded = req.headers['x-forwarded-for']
@@ -55,17 +87,21 @@ function clientIp(req) {
   return req.socket.remoteAddress || 'unknown'
 }
 
-function rateLimit(req, max = 120, windowMs = 60_000) {
+function rateLimit(req, max = 120, windowMs = 60_000, buckets = rateBuckets) {
   const ip = clientIp(req)
   const now = Date.now()
-  const bucket = rateBuckets.get(ip) || { count: 0, resetAt: now + windowMs }
+  const bucket = buckets.get(ip) || { count: 0, resetAt: now + windowMs }
   if (now > bucket.resetAt) {
     bucket.count = 0
     bucket.resetAt = now + windowMs
   }
   bucket.count += 1
-  rateBuckets.set(ip, bucket)
+  buckets.set(ip, bucket)
   return bucket.count <= max
+}
+
+function loginRateLimit(req) {
+  return rateLimit(req, LOGIN_MAX_ATTEMPTS, LOGIN_WINDOW_MS, loginRateBuckets)
 }
 
 function readStore() {
@@ -76,15 +112,33 @@ function readStore() {
     } else {
       writeFileSync(
         STORE_PATH,
-        JSON.stringify({ version: 2, products: [], categories: [] }),
+        JSON.stringify({ version: 2, products: [], categories: [], reviews: [] }),
       )
     }
   }
-  return JSON.parse(readFileSync(STORE_PATH, 'utf8'))
+  return ensureReviews(JSON.parse(readFileSync(STORE_PATH, 'utf8')))
 }
 
 function writeStore(store) {
   writeFileSync(STORE_PATH, JSON.stringify(store, null, 2))
+}
+
+function ensureReviews(store) {
+  if (!Array.isArray(store.reviews)) store.reviews = []
+  return store
+}
+
+function syncProductReviewStats(store, productId) {
+  const reviews = store.reviews.filter((r) => r.productId === productId)
+  const product = store.products.find((p) => p.id === productId)
+  if (!product) return
+  product.reviewsCount = reviews.length
+  if (reviews.length > 0) {
+    const avg =
+      reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) /
+      reviews.length
+    product.rating = Math.round(avg * 10) / 10
+  }
 }
 
 function slugify(text) {
@@ -127,6 +181,18 @@ const upload = multer({
 })
 
 const app = express()
+
+if (isProd) {
+  app.set('trust proxy', 1)
+}
+
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Frame-Options', 'DENY')
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+  next()
+})
+
 app.use(express.json({ limit: '2mb' }))
 
 app.get('/api/health', (_req, res) => {
@@ -138,12 +204,24 @@ app.get('/api/store', (_req, res) => {
 })
 
 app.post('/api/auth/login', (req, res) => {
+  if (!loginRateLimit(req)) {
+    return res.status(429).json({
+      error: 'Слишком много попыток входа. Попробуйте через 15 минут.',
+    })
+  }
+
   const { password } = req.body || {}
   if (password !== ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Неверный пароль' })
   }
+
+  const ip = clientIp(req)
+  loginRateBuckets.delete(ip)
+
   const token = randomBytes(32).toString('hex')
-  sessions.set(token, { expiresAt: Date.now() + 24 * 60 * 60 * 1000 })
+  sessions.set(token, {
+    expiresAt: Date.now() + SESSION_HOURS * 60 * 60 * 1000,
+  })
   res.json({ token })
 })
 
@@ -225,6 +303,75 @@ app.put('/api/products/:id', authMiddleware, (req, res) => {
 app.delete('/api/products/:id', authMiddleware, (req, res) => {
   const store = readStore()
   store.products = store.products.filter((p) => p.id !== req.params.id)
+  store.reviews = store.reviews.filter((r) => r.productId !== req.params.id)
+  writeStore(store)
+  res.json({ ok: true })
+})
+
+app.get('/api/reviews', (_req, res) => {
+  const store = readStore()
+  res.json(store.reviews)
+})
+
+app.post('/api/reviews', authMiddleware, (req, res) => {
+  const store = readStore()
+  const data = req.body || {}
+  const id =
+    data.id ||
+    `${data.productId}-${Date.now()}-${randomBytes(4).toString('hex')}`
+  if (store.reviews.some((r) => r.id === id)) {
+    return res.status(409).json({ error: 'Отзыв с таким ID уже существует' })
+  }
+  const review = {
+    id,
+    productId: data.productId,
+    authorName: String(data.authorName || '').trim(),
+    rating: Math.min(5, Math.max(1, Number(data.rating) || 5)),
+    text: String(data.text || '').trim(),
+    date: data.date || new Date().toISOString().slice(0, 10),
+    source: data.source === 'kaspi' ? 'kaspi' : 'manual',
+  }
+  if (!review.productId || !review.authorName || !review.text) {
+    return res.status(400).json({ error: 'Заполните товар, автора и текст' })
+  }
+  if (!store.products.some((p) => p.id === review.productId)) {
+    return res.status(404).json({ error: 'Товар не найден' })
+  }
+  store.reviews.push(review)
+  syncProductReviewStats(store, review.productId)
+  writeStore(store)
+  res.status(201).json(review)
+})
+
+app.put('/api/reviews/:id', authMiddleware, (req, res) => {
+  const store = readStore()
+  const index = store.reviews.findIndex((r) => r.id === req.params.id)
+  if (index === -1) return res.status(404).json({ error: 'Not found' })
+  const old = store.reviews[index]
+  const patch = { ...req.body }
+  if (typeof patch.rating === 'number') {
+    patch.rating = Math.min(5, Math.max(1, patch.rating))
+  }
+  if (typeof patch.authorName === 'string') {
+    patch.authorName = patch.authorName.trim()
+  }
+  if (typeof patch.text === 'string') patch.text = patch.text.trim()
+  const review = { ...old, ...patch, id: old.id }
+  store.reviews[index] = review
+  syncProductReviewStats(store, old.productId)
+  if (review.productId !== old.productId) {
+    syncProductReviewStats(store, review.productId)
+  }
+  writeStore(store)
+  res.json(review)
+})
+
+app.delete('/api/reviews/:id', authMiddleware, (req, res) => {
+  const store = readStore()
+  const review = store.reviews.find((r) => r.id === req.params.id)
+  if (!review) return res.status(404).json({ error: 'Not found' })
+  store.reviews = store.reviews.filter((r) => r.id !== req.params.id)
+  syncProductReviewStats(store, review.productId)
   writeStore(store)
   res.json({ ok: true })
 })
@@ -277,7 +424,17 @@ app.use('/uploads', express.static(UPLOADS_DIR))
 
 if (isProd) {
   const distPath = join(ROOT, 'dist')
+
+  app.get(/^\/admin(\/.*)?$/, (_req, res) => {
+    res.status(404).type('text/plain').send('Not Found')
+  })
+
+  app.get(new RegExp(`^/${ADMIN_PATH}(/.*)?$`), (_req, res) => {
+    res.sendFile(join(distPath, 'admin.html'))
+  })
+
   app.use(express.static(distPath))
+
   app.get(/^(?!\/api|\/uploads).*/, (_req, res) => {
     res.sendFile(join(distPath, 'index.html'))
   })
@@ -289,5 +446,13 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log(`SPORT KING server http://localhost:${PORT}`)
-  if (isProd) console.log('Serving production build from /dist')
+  if (isProd) {
+    console.log('Serving production build from /dist')
+    console.log(`Admin panel path: /${ADMIN_PATH}/login`)
+    if (ADMIN_PASSWORD === 'sportking') {
+      console.warn(
+        'WARNING: default ADMIN_PASSWORD is active. Set ADMIN_PASSWORD in environment.',
+      )
+    }
+  }
 })

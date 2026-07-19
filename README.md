@@ -40,9 +40,12 @@ npm run preview
 
 ## Админ-панель
 
-URL: `/admin/login`
+URL: секретный путь из `VITE_ADMIN_BASE` / `ADMIN_PATH` (см. `.env.example`), по умолчанию `/sk-manage-kz8m2p/login`. Путь `/admin` отключён.
 
-- Пароль по умолчанию: `sportking` (меняется в `src/data/site.ts`)
-- Добавление и редактирование товаров и категорий
-- Изменение цен, описаний, ссылок Kaspi
-- Данные сохраняются в localStorage браузера
+- Пароль: переменная `ADMIN_PASSWORD` (локально в `.env`, на Render — в Environment)
+- Добавление и редактирование товаров, категорий и отзывов
+- Данные и загрузки: `server/data/` (`store.json`, `uploads/`)
+
+## Деплой
+
+См. [DEPLOY.md](./DEPLOY.md) и `render.yaml` (Render Blueprint, план Starter + persistent disk).

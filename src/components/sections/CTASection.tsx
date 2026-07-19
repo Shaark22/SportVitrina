@@ -4,8 +4,8 @@ import { trackContactClick } from '../../utils/analytics'
 export function CTASection() {
   return (
     <section className="bg-dark py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold uppercase tracking-tight text-white md:text-5xl lg:text-[56px]">
+      <div className="site-container text-center">
+        <h2 className="text-section-title font-extrabold uppercase tracking-tight text-white">
           Создай свой зал дома
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-base text-white/70 md:text-lg">

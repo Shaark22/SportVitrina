@@ -26,7 +26,7 @@ const benefits = [
 export function Benefits() {
   return (
     <section className="bg-surface py-12 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="site-container">
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {benefits.map(({ icon: Icon, title, text }) => (
             <div

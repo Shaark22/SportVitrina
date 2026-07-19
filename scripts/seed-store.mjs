@@ -83,6 +83,7 @@ const store = {
   version: 2,
   products: extractArray(productsSrc, 'defaultProducts'),
   categories: extractArray(categoriesSrc, 'defaultCategories'),
+  reviews: [],
 }
 
 const outDir = join(root, 'server/data')

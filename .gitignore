@@ -11,7 +11,16 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
 ngrok.log
+
+# Scrape / debug artifacts
+scripts/debug-*.mjs
+scripts/scrape-log.txt
+scripts/kaspi-*.json
+scripts/scraped-store-backup.json
 
 # Editor directories and files
 .vscode/*

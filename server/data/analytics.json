@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "updatedAt": "2026-07-16T13:09:29.160Z",
+  "updatedAt": "2026-07-18T18:51:02.263Z",
   "totals": {
     "contacts": {
       "instagram": 3,
       "youtube": 1,
-      "whatsapp": 1
+      "whatsapp": 2,
+      "phone": 1
     },
     "products": {
       "sportking-ljuks-belyi": {
@@ -44,8 +45,8 @@
         "name": "Боксёрский мешок SportKing"
       },
       "shvedskaya-stenka-sportking-lyuks-belyy-seryy": {
-        "views": 6,
-        "clicks": 7,
+        "views": 7,
+        "clicks": 8,
         "kaspiClicks": 3,
         "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy",
         "name": "Шведская стенка SportKing Люкс белый (серый)"
@@ -58,8 +59,8 @@
         "name": "Турник SportKing 3 в 1 усиленный белый"
       },
       "shvedskaya-stenka-sportking-m-11-belyy": {
-        "views": 1,
-        "clicks": 2,
+        "views": 2,
+        "clicks": 3,
         "kaspiClicks": 1,
         "slug": "shvedskaya-stenka-sportking-m-11-belyy",
         "name": "Шведская стенка SportKing M-11 белый"
@@ -70,10 +71,122 @@
         "kaspiClicks": 0,
         "slug": "sportking-skamya-dlya-zhima-s-podstavkoy-chernyy",
         "name": "SportKing скамья для жима с подставкой (черный)"
+      },
+      "skamya-dlya-pressa-sportking": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 1,
+        "slug": "skamya-dlya-pressa-sportking",
+        "name": "Скамья для пресса SportKing "
+      },
+      "sportking-myagkaya-tarzanka-4029687-siniy": {
+        "views": 1,
+        "clicks": 2,
+        "kaspiClicks": 0,
+        "slug": "sportking-myagkaya-tarzanka-4029687-siniy",
+        "name": "SportKing мягкая тарзанка 4029687 синий"
+      },
+      "shvedskaya-stenka-sportking-layt-belyy-seryy": {
+        "views": 1,
+        "clicks": 2,
+        "kaspiClicks": 0,
+        "slug": "shvedskaya-stenka-sportking-layt-belyy-seryy",
+        "name": "Шведская стенка SportKing Лайт белый (серый)"
+      },
+      "kaspi-104370774": {
+        "views": 2,
+        "clicks": 2,
+        "kaspiClicks": 0,
+        "slug": "turnik-sportking-3v1-multihvat-belyy-104370774",
+        "name": "Турник SportKing 3в1 мультихват (белый)"
+      },
+      "kaspi-112626542": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "skamya-dlya-pressa-sportking-237059-112626542",
+        "name": "Скамья для пресса SportKing 237059"
+      },
+      "kaspi-118114006": {
+        "views": 0,
+        "clicks": 0,
+        "kaspiClicks": 1,
+        "slug": "sportivno-igrovoy-kompleks-sportking-90x56x220-sm-118114006",
+        "name": "Спортивно-игровой комплекс SportKing 90x56x220 см"
+      },
+      "kaspi-160499654": {
+        "views": 6,
+        "clicks": 0,
+        "kaspiClicks": 0,
+        "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy-160499654",
+        "name": "Шведская стенка SportKing Люкс белый (серый)"
+      },
+      "kaspi-117516731": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "shvedskaya-stenka-sportking-m-10-05-komplekt-s-3-v-1-turnikom-chernyy-117516731",
+        "name": "Шведская стенка SportKing M-10-05 (комплект с 3 в 1 турником) черный"
+      },
+      "kaspi-117494194": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "turnik-sportking-3-v-1-atlant-usilennyy-chernyy-117494194",
+        "name": "Турник SportKing 3 в 1 Атлант усиленный черный"
+      },
+      "kaspi-108167958": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "turnik-sportking-nastennyy-chernyy-108167958",
+        "name": "Турник SportKing настенный черный"
+      },
+      "kaspi-104370776": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 1,
+        "slug": "turnik-sportking-3-v-1-usilennyy-belyy-104370776",
+        "name": "Турник SportKing 3 в 1 усиленный белый"
+      },
+      "kaspi-117162985": {
+        "views": 1,
+        "clicks": 0,
+        "kaspiClicks": 0,
+        "slug": "upory-sportking-896547-dugovye-117162985",
+        "name": "Упоры SportKing 896547 дуговые"
+      },
+      "kaspi-114071206": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "upory-sportking-195354-skladnye-114071206",
+        "name": "Упоры SportKing 195354 складные"
+      },
+      "ntcn": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "ntcn",
+        "name": "ntcn"
+      },
+      "kaspi-118675315": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "shvedskaya-stenka-sportking-lyuks-belyy-118675315",
+        "name": "Шведская стенка SportKing Люкс белый"
+      },
+      "kaspi-104370777": {
+        "views": 1,
+        "clicks": 1,
+        "kaspiClicks": 0,
+        "slug": "turnik-sportking-3v1-usilennyy-chernyy-104370777",
+        "name": "Турник SportKing 3в1 усиленный черный"
       }
     },
-    "pageViews": 1016,
-    "uniqueVisitors": 33,
+    "pageViews": 1130,
+    "uniqueVisitors": 49,
     "_visitorIds": [
       "test-visitor-1",
       "test-visitor-2",
@@ -107,7 +220,23 @@
       "test-visitor-30",
       "c2ea7548-92ce-4d39-868c-ccd05e81b2c7",
       "5b3082c5-88f2-4127-9d48-a82e0f5d614d",
-      "0752b5c2-d5be-40f9-b423-da0e35e55183"
+      "0752b5c2-d5be-40f9-b423-da0e35e55183",
+      "ca916e31-1155-47d7-9c4c-1dfd2a3e4835",
+      "e420ce3b-2c11-4d5a-b638-9b65763170fe",
+      "0c616204-a5df-43bc-9e9d-05c92b2ec489",
+      "86e2b2fd-8978-460d-b843-bbc74c0c1540",
+      "024a6df1-1922-442f-9185-dfc05748d2a2",
+      "c35ef0ce-2375-495d-a1d9-c306e20e0187",
+      "918a0953-a4d3-48e6-9138-e4427b98603c",
+      "e09cc7ee-48bb-4d88-9eef-0083d7e28432",
+      "106336b4-99ea-417e-96f7-7455c39b20ba",
+      "8dac4226-836a-491f-8643-4d89930ef04e",
+      "ca599f24-b76b-4ded-8993-813f2d18b623",
+      "9555a3ad-4bb4-45da-8294-10424eafa91d",
+      "d06d6c82-1c99-4a87-9286-a582e7014693",
+      "0bd2205a-aa01-4876-8c32-e1f54e09c67d",
+      "02524d6b-045c-4871-941c-db0b2134ed18",
+      "9b7ce232-dd2a-4f8f-932c-370ce8f6ddf0"
     ]
   },
   "daily": {
@@ -154,8 +283,8 @@
           "name": "Боксёрский мешок SportKing"
         },
         "shvedskaya-stenka-sportking-lyuks-belyy-seryy": {
-          "views": 6,
-          "clicks": 7,
+          "views": 7,
+          "clicks": 8,
           "kaspiClicks": 3,
           "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy",
           "name": "Шведская стенка SportKing Люкс белый (серый)"
@@ -168,8 +297,8 @@
           "name": "Турник SportKing 3 в 1 усиленный белый"
         },
         "shvedskaya-stenka-sportking-m-11-belyy": {
-          "views": 1,
-          "clicks": 2,
+          "views": 2,
+          "clicks": 3,
           "kaspiClicks": 1,
           "slug": "shvedskaya-stenka-sportking-m-11-belyy",
           "name": "Шведская стенка SportKing M-11 белый"
@@ -180,10 +309,73 @@
           "kaspiClicks": 0,
           "slug": "sportking-skamya-dlya-zhima-s-podstavkoy-chernyy",
           "name": "SportKing скамья для жима с подставкой (черный)"
+        },
+        "skamya-dlya-pressa-sportking": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 1,
+          "slug": "skamya-dlya-pressa-sportking",
+          "name": "Скамья для пресса SportKing "
+        },
+        "sportking-myagkaya-tarzanka-4029687-siniy": {
+          "views": 1,
+          "clicks": 2,
+          "kaspiClicks": 0,
+          "slug": "sportking-myagkaya-tarzanka-4029687-siniy",
+          "name": "SportKing мягкая тарзанка 4029687 синий"
+        },
+        "shvedskaya-stenka-sportking-layt-belyy-seryy": {
+          "views": 1,
+          "clicks": 2,
+          "kaspiClicks": 0,
+          "slug": "shvedskaya-stenka-sportking-layt-belyy-seryy",
+          "name": "Шведская стенка SportKing Лайт белый (серый)"
+        },
+        "kaspi-104370774": {
+          "views": 2,
+          "clicks": 2,
+          "kaspiClicks": 0,
+          "slug": "turnik-sportking-3v1-multihvat-belyy-104370774",
+          "name": "Турник SportKing 3в1 мультихват (белый)"
+        },
+        "kaspi-112626542": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "skamya-dlya-pressa-sportking-237059-112626542",
+          "name": "Скамья для пресса SportKing 237059"
+        },
+        "kaspi-118114006": {
+          "views": 0,
+          "clicks": 0,
+          "kaspiClicks": 1,
+          "slug": "sportivno-igrovoy-kompleks-sportking-90x56x220-sm-118114006",
+          "name": "Спортивно-игровой комплекс SportKing 90x56x220 см"
+        },
+        "kaspi-160499654": {
+          "views": 5,
+          "clicks": 0,
+          "kaspiClicks": 0,
+          "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy-160499654",
+          "name": "Шведская стенка SportKing Люкс белый (серый)"
+        },
+        "kaspi-117516731": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "shvedskaya-stenka-sportking-m-10-05-komplekt-s-3-v-1-turnikom-chernyy-117516731",
+          "name": "Шведская стенка SportKing M-10-05 (комплект с 3 в 1 турником) черный"
+        },
+        "kaspi-117494194": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "turnik-sportking-3-v-1-atlant-usilennyy-chernyy-117494194",
+          "name": "Турник SportKing 3 в 1 Атлант усиленный черный"
         }
       },
-      "pageViews": 1016,
-      "uniqueVisitors": 33,
+      "pageViews": 1079,
+      "uniqueVisitors": 44,
       "_visitorIds": [
         "test-visitor-1",
         "test-visitor-2",
@@ -217,7 +409,103 @@
         "test-visitor-30",
         "c2ea7548-92ce-4d39-868c-ccd05e81b2c7",
         "5b3082c5-88f2-4127-9d48-a82e0f5d614d",
-        "0752b5c2-d5be-40f9-b423-da0e35e55183"
+        "0752b5c2-d5be-40f9-b423-da0e35e55183",
+        "ca916e31-1155-47d7-9c4c-1dfd2a3e4835",
+        "e420ce3b-2c11-4d5a-b638-9b65763170fe",
+        "0c616204-a5df-43bc-9e9d-05c92b2ec489",
+        "86e2b2fd-8978-460d-b843-bbc74c0c1540",
+        "024a6df1-1922-442f-9185-dfc05748d2a2",
+        "c35ef0ce-2375-495d-a1d9-c306e20e0187",
+        "918a0953-a4d3-48e6-9138-e4427b98603c",
+        "e09cc7ee-48bb-4d88-9eef-0083d7e28432",
+        "106336b4-99ea-417e-96f7-7455c39b20ba",
+        "8dac4226-836a-491f-8643-4d89930ef04e",
+        "ca599f24-b76b-4ded-8993-813f2d18b623"
+      ]
+    },
+    "2026-07-17": {
+      "uniqueVisitors": 2,
+      "pageViews": 3,
+      "contacts": {},
+      "products": {},
+      "_visitorIds": [
+        "e420ce3b-2c11-4d5a-b638-9b65763170fe",
+        "ca916e31-1155-47d7-9c4c-1dfd2a3e4835"
+      ]
+    },
+    "2026-07-18": {
+      "uniqueVisitors": 7,
+      "pageViews": 48,
+      "contacts": {
+        "whatsapp": 1,
+        "phone": 1
+      },
+      "products": {
+        "kaspi-108167958": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "turnik-sportking-nastennyy-chernyy-108167958",
+          "name": "Турник SportKing настенный черный"
+        },
+        "kaspi-104370776": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 1,
+          "slug": "turnik-sportking-3-v-1-usilennyy-belyy-104370776",
+          "name": "Турник SportKing 3 в 1 усиленный белый"
+        },
+        "kaspi-117162985": {
+          "views": 1,
+          "clicks": 0,
+          "kaspiClicks": 0,
+          "slug": "upory-sportking-896547-dugovye-117162985",
+          "name": "Упоры SportKing 896547 дуговые"
+        },
+        "kaspi-114071206": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "upory-sportking-195354-skladnye-114071206",
+          "name": "Упоры SportKing 195354 складные"
+        },
+        "ntcn": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "ntcn",
+          "name": "ntcn"
+        },
+        "kaspi-118675315": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "shvedskaya-stenka-sportking-lyuks-belyy-118675315",
+          "name": "Шведская стенка SportKing Люкс белый"
+        },
+        "kaspi-160499654": {
+          "views": 1,
+          "clicks": 0,
+          "kaspiClicks": 0,
+          "slug": "shvedskaya-stenka-sportking-lyuks-belyy-seryy-160499654",
+          "name": "Шведская стенка SportKing Люкс белый (серый)"
+        },
+        "kaspi-104370777": {
+          "views": 1,
+          "clicks": 1,
+          "kaspiClicks": 0,
+          "slug": "turnik-sportking-3v1-usilennyy-chernyy-104370777",
+          "name": "Турник SportKing 3в1 усиленный черный"
+        }
+      },
+      "_visitorIds": [
+        "9555a3ad-4bb4-45da-8294-10424eafa91d",
+        "5b3082c5-88f2-4127-9d48-a82e0f5d614d",
+        "e420ce3b-2c11-4d5a-b638-9b65763170fe",
+        "d06d6c82-1c99-4a87-9286-a582e7014693",
+        "0bd2205a-aa01-4876-8c32-e1f54e09c67d",
+        "02524d6b-045c-4871-941c-db0b2134ed18",
+        "9b7ce232-dd2a-4f8f-932c-370ce8f6ddf0"
       ]
     }
   }

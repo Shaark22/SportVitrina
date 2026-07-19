@@ -11,7 +11,7 @@ export function SectionTitle({
 }: SectionTitleProps) {
   return (
     <div className={`min-w-0 ${align === 'center' ? 'text-center' : ''}`}>
-      <h2 className="text-xl font-extrabold uppercase tracking-tight text-dark sm:text-4xl md:text-5xl lg:text-[56px]">
+      <h2 className="text-section-title font-extrabold uppercase tracking-tight text-dark">
         {title}
       </h2>
       {subtitle && (

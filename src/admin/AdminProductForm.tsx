@@ -60,17 +60,16 @@ export function AdminProductForm() {
         }
       : { ...emptyProduct, category: categories[0]?.slug ?? '' },
   )
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   if (id && !existing) {
-    return <Navigate to="/admin/products" replace />
+    return <Navigate to="/products" replace />
   }
 
   const update = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
-
-  const [saving, setSaving] = useState(false)
-  const [saveError, setSaveError] = useState('')
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -103,7 +102,7 @@ export function AdminProductForm() {
       } else {
         await addProduct(payload)
       }
-      navigate('/admin/products')
+      navigate('/products')
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : 'Не удалось сохранить товар')
     } finally {
@@ -117,7 +116,7 @@ export function AdminProductForm() {
   return (
     <div>
       <Link
-        to="/admin/products"
+        to="/products"
         className="text-sm font-semibold text-text-secondary hover:text-dark"
       >
         ← Назад к товарам

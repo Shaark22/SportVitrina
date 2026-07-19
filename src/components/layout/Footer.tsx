@@ -1,7 +1,9 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { MessageCircle } from 'lucide-react'
 import { YoutubeIcon } from '../ui/YoutubeIcon'
 import { useData } from '../../context/DataContext'
+import { getCategoriesWithProducts } from '../../utils/categoryCounts'
 import { siteConfig } from '../../data/site'
 import { trackContactClick } from '../../utils/analytics'
 import { toTelHref } from '../../utils/phone'
@@ -17,13 +19,21 @@ const footerLinks = [
 ]
 
 export function Footer() {
-  const { categories } = useData()
+  const { categories, products } = useData()
+
+  const visibleCategories = useMemo(
+    () => getCategoriesWithProducts(categories, products),
+    [categories, products],
+  )
+
   return (
     <footer className="bg-dark-secondary text-white">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 supports-[padding:max(0px)]:pb-[max(3rem,env(safe-area-inset-bottom))] lg:px-8 lg:py-16">
+      <div className="site-container py-12 sm:py-16 supports-[padding:max(0px)]:pb-[max(3rem,env(safe-area-inset-bottom))] lg:py-16">
         <div className="grid min-w-0 gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
           <div className="min-w-0 lg:col-span-1">
-            <Logo className="mb-4 h-10 w-[130px] sm:h-12 sm:w-[160px]" variant="inverted" />
+            <Link to="/" className="mb-4 inline-flex items-center" aria-label="SPORT KING — на главную">
+              <Logo size="nav" variant="inverted" />
+            </Link>
             <p className="text-sm leading-relaxed text-white/70">
               {siteConfig.description}
             </p>
@@ -55,7 +65,7 @@ export function Footer() {
               Категории
             </h3>
             <ul className="space-y-3">
-              {categories.map((cat) => (
+              {visibleCategories.map((cat) => (
                 <li key={cat.slug}>
                   <Link
                     to={`/category/${cat.slug}`}

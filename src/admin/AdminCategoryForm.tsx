@@ -24,13 +24,12 @@ export function AdminCategoryForm() {
   const [form, setForm] = useState(() =>
     existing ? { ...existing } : { ...emptyCategory },
   )
-
-  if (id && !existing) {
-    return <Navigate to="/admin/categories" replace />
-  }
-
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
+
+  if (id && !existing) {
+    return <Navigate to="/categories" replace />
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -45,7 +44,7 @@ export function AdminCategoryForm() {
       } else {
         await addCategory(payload)
       }
-      navigate('/admin/categories')
+      navigate('/categories')
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : 'Не удалось сохранить категорию')
     } finally {
@@ -59,7 +58,7 @@ export function AdminCategoryForm() {
   return (
     <div>
       <Link
-        to="/admin/categories"
+        to="/categories"
         className="text-sm font-semibold text-text-secondary hover:text-dark"
       >
         ← Назад к категориям

@@ -11,9 +11,17 @@ const styles: Record<BadgeProps['label'], string> = {
 export function Badge({ label }: BadgeProps) {
   return (
     <span
-      className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-bold uppercase tracking-wide ${styles[label]}`}
+      className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider sm:rounded-lg sm:px-2.5 sm:py-1 sm:text-xs ${styles[label]}`}
     >
       {label}
+    </span>
+  )
+}
+
+export function DiscountBadge({ percent }: { percent: number }) {
+  return (
+    <span className="inline-flex rounded-md bg-dark px-2 py-0.5 text-[10px] font-extrabold text-white sm:rounded-lg sm:px-2.5 sm:py-1 sm:text-xs">
+      −{percent}%
     </span>
   )
 }

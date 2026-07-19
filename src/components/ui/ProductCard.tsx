@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ExternalLink } from 'lucide-react'
 import type { Product } from '../../types/product'
 import { formatPrice } from '../../utils/formatPrice'
 import { openKaspi } from '../../hooks/usePageMeta'
@@ -22,55 +23,74 @@ function handleProductClick(product: Product) {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface transition-transform duration-200 hover:scale-[1.02] sm:rounded-2xl max-sm:hover:scale-100">
+    <article className="group card-shell">
       <Link
         to={`/product/${product.slug}`}
-        className="relative block"
+        className="card-image-frame block"
         onClick={() => handleProductClick(product)}
       >
-        <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-white p-1.5 sm:p-3">
+        <div className="flex h-[78%] w-[88%] items-center justify-center sm:h-[80%] sm:w-[90%]">
           <SmartImage
             src={product.image}
             alt={product.name}
-            className="max-h-full max-w-full object-contain"
+            className="transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             aspect=""
           />
         </div>
-        {product.badge && (
-          <div className="absolute left-2 top-2 sm:left-4 sm:top-4">
-            <Badge label={product.badge} />
+
+        <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-3 sm:p-4">
+          <div className="flex flex-wrap gap-1.5">
+            {product.badge && <Badge label={product.badge} />}
+          </div>
+        </div>
+
+        {product.inStock && (
+          <div className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-surface/95 px-2 py-1 text-[10px] font-semibold text-success shadow-sm backdrop-blur-sm sm:bottom-4 sm:right-4 sm:px-2.5 sm:text-xs">
+            <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden />
+            В наличии
           </div>
         )}
+
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center bg-linear-to-t from-dark/5 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="mb-4 rounded-full bg-surface/95 px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-dark shadow-sm backdrop-blur-sm">
+            Подробнее
+          </span>
+        </div>
       </Link>
 
-      <div className="flex flex-1 flex-col p-2.5 sm:p-5">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-5">
         <Link
           to={`/product/${product.slug}`}
           onClick={() => handleProductClick(product)}
+          className="block"
         >
-          <h3 className="line-clamp-3 text-xs font-bold leading-snug text-dark transition-colors hover:text-text-secondary sm:line-clamp-none sm:text-base md:text-lg">
+          <h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-bold leading-snug text-dark transition-colors group-hover:text-dark-secondary sm:min-h-[2.75rem] sm:text-base">
             {product.name}
           </h3>
         </Link>
 
-        <div className="mt-1.5 sm:mt-2">
-          <Rating rating={product.rating} reviewsCount={product.reviewsCount} size="sm" />
+        <div className="mt-2">
+          <Rating
+            rating={product.rating}
+            reviewsCount={product.reviewsCount}
+            size="sm"
+          />
         </div>
 
-        <div className="mt-2 flex flex-wrap items-baseline gap-1 sm:mt-3 sm:gap-2">
-          <span className="text-sm font-extrabold text-dark sm:text-xl">
+        <div className="mt-2.5 flex flex-wrap items-end gap-x-2 gap-y-1 sm:mt-3">
+          <span className="text-base font-extrabold tracking-tight text-dark sm:text-xl">
             {formatPrice(product.price)}
           </span>
           {product.oldPrice && (
-            <span className="text-[10px] text-text-secondary line-through sm:text-sm">
+            <span className="pb-0.5 text-xs text-text-secondary line-through sm:text-sm">
               {formatPrice(product.oldPrice)}
             </span>
           )}
         </div>
 
-        <div className="mt-auto pt-2.5 sm:pt-4">
+        <div className="mt-auto pt-3 sm:pt-4">
           <Button
-            className="w-full min-h-10 px-2 text-[10px] sm:min-h-12 sm:px-6 sm:text-sm"
+            className="w-full min-h-10 !px-2.5 gap-1 normal-case tracking-normal whitespace-nowrap text-[11px] sm:min-h-12 sm:!px-4 sm:gap-1.5 sm:text-sm"
             onClick={() =>
               openKaspi(product.kaspiUrl, {
                 id: product.id,
@@ -80,8 +100,9 @@ export function ProductCard({ product }: ProductCardProps) {
             }
             aria-label={`Купить ${product.name} на Kaspi`}
           >
-            <span className="sm:hidden">KASPI</span>
-            <span className="hidden sm:inline">Купить на KASPI</span>
+            <span>Купить на Kaspi</span>
+            <ExternalLink size={12} className="shrink-0 sm:hidden" aria-hidden />
+            <ExternalLink size={14} className="hidden shrink-0 sm:block" aria-hidden />
           </Button>
         </div>
       </div>
